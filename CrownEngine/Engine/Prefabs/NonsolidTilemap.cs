@@ -16,7 +16,7 @@ namespace CrownEngine.Content
 
         public NonsolidTilemap(Vector2 pos, Stage myStage, int[,] tileGrid, List<Texture2D> _textures, int _tileScale) : base(pos, myStage)
         {
-            grid = tileGrid; //test
+            grid = tileGrid;
 
             textures = _textures;
 
