@@ -4,7 +4,6 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using CrownEngine.Content;
 using CrownEngine.Engine;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Media;
@@ -27,7 +26,7 @@ namespace CrownEngine
         public int windowHeight = 144;
         public int windowScale = 2;
 
-        public Stage activeStage = new Stage();
+        public Stage activeStage;
         public List<Stage> stages = new List<Stage>();
 
         public Texture2D MissingTexture;
@@ -44,17 +43,19 @@ namespace CrownEngine
         public MouseState oldMouseState;
         public MouseState mouseState;
 
+        public string path;
+
         public EngineGame()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+            instance = this;
         }
 
         protected override void Initialize()
         {
-            instance = this; 
-
             scene = new RenderTarget2D(GraphicsDevice, windowWidth, windowHeight, false, SurfaceFormat.Color, DepthFormat.None);
 
             foreach (string file in Directory.EnumerateFiles("Content/", "*.png", SearchOption.AllDirectories))
@@ -63,9 +64,14 @@ namespace CrownEngine
                 Textures[Path.GetFileName(fixedPath)] = Texture2D.FromStream(GraphicsDevice, File.OpenRead(file));
             }
 
+            foreach (KeyValuePair<string, Texture2D> str in Textures)
+            {
+                Debug.WriteLine(str.Value);
+            }
+
             MissingTexture = Textures["MissingTexture.png"];
 
-            foreach (string file in Directory.EnumerateFiles("Content/", "*.wav", SearchOption.AllDirectories))
+            /*foreach (string file in Directory.EnumerateFiles("Content/", "*.wav", SearchOption.AllDirectories))
             {
                 string fixedPath = file.Substring(Content.RootDirectory.Length).TrimStart(Path.DirectorySeparatorChar);
                 SoundEffects[Path.GetFileName(fixedPath)] = SoundEffect.FromStream(TitleContainer.OpenStream(fixedPath));
@@ -75,21 +81,18 @@ namespace CrownEngine
             foreach (KeyValuePair<string, SoundEffect> fx in SoundEffects)
             {
                 Debug.WriteLine(fx.Key);
-            }
+            }*/
 
             random = new Random();
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            InitializeStages();
-
             base.Initialize();
         }
 
-        public virtual void InitializeStages()
+        public void InitializeStages(List<Stage> _stages)
         {
-            stages.Add(new MainMenu());
-            stages.Add(new Sandbox());
+            stages = _stages;
 
             activeStage = stages[0];
 

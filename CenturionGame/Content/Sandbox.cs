@@ -6,8 +6,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using CrownEngine.Engine;
 using System.Diagnostics;
+using CrownEngine.Engine.Prefabs;
 
-namespace CrownEngine.Content
+namespace CenturionGame.Content
 {
     public class Sandbox : Stage
     {
@@ -20,7 +21,7 @@ namespace CrownEngine.Content
 
         public override void Load()
         {
-            AddActor(new SolidTileLayer(Vector2.Zero, this, new int[,] {
+            AddActor(new SolidTilemap(Vector2.Zero, this, new int[,] {
                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },

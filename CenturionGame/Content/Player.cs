@@ -7,8 +7,9 @@ using Microsoft.Xna.Framework.Content;
 using CrownEngine.Engine;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
+using CrownEngine;
 
-namespace CrownEngine.Content
+namespace CenturionGame.Content
 {
     public class Player : Actor
     {

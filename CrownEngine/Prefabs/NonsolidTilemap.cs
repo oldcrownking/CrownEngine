@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using CrownEngine.Engine;
 
-namespace CrownEngine.Content
+namespace CrownEngine.Engine.Prefabs
 {
     public class NonsolidTilemap : Actor
     {

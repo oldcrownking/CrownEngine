@@ -6,8 +6,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using CrownEngine.Engine;
 using System.Diagnostics;
+using CenturionGame;
+using CrownEngine;
 
-namespace CrownEngine.Content
+namespace CenturionGame.Content
 {
     public class PlayButton : Actor
     {
