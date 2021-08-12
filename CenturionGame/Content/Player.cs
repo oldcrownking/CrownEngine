@@ -4,10 +4,9 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-using CrownEngine.Engine;
+using CrownEngine;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
-using CrownEngine;
 
 namespace CenturionGame.Content
 {
@@ -59,20 +58,30 @@ namespace CenturionGame.Content
         public override void Update()
         {
             Rigidbody rb = GetComponent<Rigidbody>();
-            if (EngineGame.instance.keyboardState.IsKeyDown(Keys.A))
+            if (Centurion.game.keyboardState.IsKeyDown(Keys.A))
                 rb.velocity.X -= 0.05f;
 
-            if (EngineGame.instance.keyboardState.IsKeyDown(Keys.D))
+            if (Centurion.game.keyboardState.IsKeyDown(Keys.D))
                 rb.velocity.X += 0.05f;
 
-            if (!EngineGame.instance.keyboardState.IsKeyDown(Keys.D) && !EngineGame.instance.keyboardState.IsKeyDown(Keys.A))
+            if (!Centurion.game.keyboardState.IsKeyDown(Keys.D) && !Centurion.game.keyboardState.IsKeyDown(Keys.A))
             {
                 rb.velocity.X *= 0.1f;
             }
 
+            if (!Centurion.game.keyboardState.IsKeyDown(Keys.D) && rb.velocity.X >= 0.05f)
+            {
+                rb.velocity *= 0.01f;
+            }
+
+            if (!Centurion.game.keyboardState.IsKeyDown(Keys.A) && rb.velocity.X <= -0.05f)
+            {
+                rb.velocity *= 0.01f;
+            }
+
             rb.velocity.X = rb.velocity.X.Clamp(-1.5f, 1.5f);
 
-            if (EngineGame.instance.keyboardState.IsKeyDown(Keys.Space) && rb.velocity.Y == 0 && jumpTimer == 0) //scale.X = 0.25, should be 8
+            if (Centurion.game.keyboardState.IsKeyDown(Keys.Space) && rb.velocity.Y == 0 && jumpTimer == 0) //scale.X = 0.25, should be 8
             {
                 rb.velocity.Y -= 2.5f;
                 squashHeight = 0;
@@ -84,7 +93,7 @@ namespace CenturionGame.Content
 
             if (rb.velocity.Y < 0)
             {
-                if (jumpTimer < 10 && EngineGame.instance.keyboardState.IsKeyDown(Keys.Space))
+                if (jumpTimer < 10 && Centurion.game.keyboardState.IsKeyDown(Keys.Space))
                 {
                     rb.gravityForce -= (rb.gravityForce / 10f);
                 }
@@ -94,7 +103,7 @@ namespace CenturionGame.Content
                 jumpTimer++;
             }
 
-            if(rb.velocity.Y > 0)
+            if(rb.velocity.Y >= 0.01f)
             {
                 frame = new Point(0, 3);
             }
@@ -103,9 +112,9 @@ namespace CenturionGame.Content
             {
                 frame = new Point(0, 0);
 
-                if(Math.Abs(rb.velocity.X) >= 0.01f)
+                if(Math.Abs(rb.velocity.X) >= 0.01f && (Centurion.game.keyboardState.IsKeyDown(Keys.A) || Centurion.game.keyboardState.IsKeyDown(Keys.D)))
                 {
-                    counter += rb.velocity.X;
+                    counter += Math.Abs((int)rb.velocity.X);
 
                     if ((int)counter % 6 == 0)
                     {

@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace CrownEngine.Engine
+namespace CrownEngine
 {
     public static class Extensions
     {

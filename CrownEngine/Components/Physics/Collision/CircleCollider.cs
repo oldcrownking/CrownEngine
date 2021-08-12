@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using CrownEngine;
 
-namespace CrownEngine.Engine
+namespace CrownEngine
 {
     public class CircleCollider : Component
     {

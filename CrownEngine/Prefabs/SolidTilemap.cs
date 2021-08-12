@@ -4,18 +4,21 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-using CrownEngine.Engine;
+using CrownEngine;
 
-namespace CrownEngine.Engine.Prefabs
+namespace CrownEngine.Prefabs
 {
     public class SolidTilemap : Actor
     {
         public int[,] grid;
         public List<Texture2D> textures;
+        public int tileSize;
 
-        public SolidTilemap(Vector2 pos, Stage myStage, int[,] tileGrid, List<Texture2D> _textures) : base(pos, myStage)
+        public SolidTilemap(Vector2 pos, Stage myStage, int[,] tileGrid, List<Texture2D> _textures, int _tileSize) : base(pos, myStage)
         {
             grid = tileGrid;
+
+            tileSize = _tileSize;
 
             textures = _textures;
         }
@@ -39,8 +42,8 @@ namespace CrownEngine.Engine.Prefabs
                 dict[i] = textures[i - 1];
             }
 
-            AddComponent(new TileRenderer(8, dict, grid, Color.White, this));
-            AddComponent(new TileCollider(8, grid, this));
+            AddComponent(new TileRenderer(tileSize, dict, grid, Color.White, this));
+            AddComponent(new TileCollider(tileSize, grid, this));
 
             base.Load();
         }

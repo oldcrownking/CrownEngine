@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-using CrownEngine.Engine;
+using CrownEngine;
 using System.Diagnostics;
 using CenturionGame;
 using CrownEngine;
@@ -25,7 +25,7 @@ namespace CenturionGame.Content
             spriteRenderer.tex = EngineHelpers.GetTexture("PlayButton");
 
             AddComponent(spriteRenderer);
-            AddComponent(new Button(EngineGame.instance.mouseState.LeftButton, this));
+            AddComponent(new Button(Centurion.game.mouseState.LeftButton, this));
 
             width = 12;
             height = 13;
@@ -42,7 +42,7 @@ namespace CenturionGame.Content
                 GetComponent<SpriteRenderer>().frame = new Point(0, 0);
             }
 
-            if (GetComponent<Button>().pressed && EngineGame.instance.mouseState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Released)
+            if (GetComponent<Button>().pressed && Centurion.game.mouseState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Released)
             {
                 EngineHelpers.SwitchStages(1);
             }

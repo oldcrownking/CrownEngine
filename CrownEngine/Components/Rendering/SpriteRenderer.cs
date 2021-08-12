@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Input;
 using CrownEngine;
 using System.Diagnostics;
 
-namespace CrownEngine.Engine
+namespace CrownEngine
 {
     public class SpriteRenderer : Component
     {

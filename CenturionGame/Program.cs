@@ -1,5 +1,4 @@
 ﻿using System;
-using CrownEngine.Engine;
 using CrownEngine;
 using System.Collections.Generic;
 using CenturionGame.Content;
@@ -17,31 +16,18 @@ using System.Diagnostics;
 
 namespace CenturionGame
 {
-    public static class Program
+    public static class Centurion
     {
+        public static EngineGame game;
+
         [STAThread]
         static void Main()
         {
-            using (var game = new EngineGame())
+            using (var _game = new CenturionGame())
             {
-                foreach (string file in Directory.EnumerateFiles("Content/", "*.png", SearchOption.AllDirectories))
-                {
-                    string fixedPath = file.Substring(game.Content.RootDirectory.Length).TrimStart(Path.DirectorySeparatorChar);
-                    game.Textures[Path.GetFileName(fixedPath)] = Texture2D.FromStream(game.GraphicsDevice, File.OpenRead(file));
-                }
+                game = _game;
 
-                foreach (KeyValuePair<string, Texture2D> str in game.Textures)
-                {
-                    Debug.WriteLine(str.Value);
-                }
-
-                game.InitializeStages(new List<Stage>()
-                {
-                    new MainMenu(),
-                    new Sandbox()
-                });
-
-                game.Run();
+                _game.Run();
             }
         }
     }

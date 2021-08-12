@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using CrownEngine.Engine;
+using CrownEngine;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Media;
 using System.Reflection;
@@ -22,9 +22,9 @@ namespace CrownEngine
 
         public static EngineGame instance;
 
-        public int windowWidth = 256;
-        public int windowHeight = 144;
-        public int windowScale = 2;
+        public virtual int windowWidth => 256;
+        public virtual int windowHeight => 144;
+        public virtual int windowScale => 2;
 
         public Stage activeStage;
         public List<Stage> stages = new List<Stage>();
@@ -43,7 +43,7 @@ namespace CrownEngine
         public MouseState oldMouseState;
         public MouseState mouseState;
 
-        public string path;
+        public PrimitiveType primitiveBatch;
 
         public EngineGame()
         {
@@ -57,19 +57,6 @@ namespace CrownEngine
         protected override void Initialize()
         {
             scene = new RenderTarget2D(GraphicsDevice, windowWidth, windowHeight, false, SurfaceFormat.Color, DepthFormat.None);
-
-            foreach (string file in Directory.EnumerateFiles("Content/", "*.png", SearchOption.AllDirectories))
-            {
-                string fixedPath = file.Substring(Content.RootDirectory.Length).TrimStart(Path.DirectorySeparatorChar);
-                Textures[Path.GetFileName(fixedPath)] = Texture2D.FromStream(GraphicsDevice, File.OpenRead(file));
-            }
-
-            foreach (KeyValuePair<string, Texture2D> str in Textures)
-            {
-                Debug.WriteLine(str.Value);
-            }
-
-            MissingTexture = Textures["MissingTexture.png"];
 
             /*foreach (string file in Directory.EnumerateFiles("Content/", "*.wav", SearchOption.AllDirectories))
             {
@@ -87,10 +74,17 @@ namespace CrownEngine
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            CustomInitialize();
+
             base.Initialize();
         }
 
-        public void InitializeStages(List<Stage> _stages)
+        public virtual void CustomInitialize()
+        {
+
+        }
+
+        public virtual void InitializeStages(List<Stage> _stages)
         {
             stages = _stages;
 
@@ -101,8 +95,6 @@ namespace CrownEngine
 
         protected override void Update(GameTime gameTime)
         {
-            //SoundEffects["chungus.wav"].Play();
-
             oldKeyboardState = keyboardState;
             keyboardState = Keyboard.GetState();
 
@@ -114,16 +106,14 @@ namespace CrownEngine
 
             activeStage.Update();
 
-            if(keyboardState.IsKeyDown(Keys.OemPlus) && windowScale < 6)
-            {
-                windowScale++;
-            }
-            if (keyboardState.IsKeyDown(Keys.OemMinus) && windowScale > 1)
-            {
-                windowScale--;
-            }
+            CustomUpdate();
 
             base.Update(gameTime);
+        }
+
+        public virtual void CustomUpdate()
+        {
+
         }
 
         protected void DrawSceneToTexture(RenderTarget2D renderTarget)
@@ -157,9 +147,16 @@ namespace CrownEngine
 
             _spriteBatch.Draw(scene, new Rectangle(0, 0, windowWidth * windowScale, windowHeight * windowScale), Color.White);
 
+            CustomDraw();
+
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        public virtual void CustomDraw()
+        {
+
         }
     }
 }

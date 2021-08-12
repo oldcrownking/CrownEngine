@@ -4,9 +4,9 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-using CrownEngine.Engine;
+using CrownEngine;
 using System.Diagnostics;
-using CrownEngine.Engine.Prefabs;
+using CrownEngine.Prefabs;
 
 namespace CenturionGame.Content
 {
@@ -40,7 +40,7 @@ namespace CenturionGame.Content
                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-                }, new List<Texture2D>() { EngineHelpers.GetTexture("Grass"), EngineHelpers.GetTexture("Dirt"), EngineHelpers.GetTexture("Stone") }));
+                }, new List<Texture2D>() { EngineHelpers.GetTexture("Grass"), EngineHelpers.GetTexture("Dirt"), EngineHelpers.GetTexture("Stone") }, 8));
 
             AddActor(new Player(new Vector2(64, 64), this));
         }
@@ -71,6 +71,13 @@ namespace CenturionGame.Content
             if (sceneTranssing) sceneTransTimer++;
 
             if (sceneTransTimer > 80) EngineHelpers.SwitchStages(0);
+
+            VertexPositionColor[] vertices = new VertexPositionColor[3];
+
+            vertices[0] = new VertexPositionColor(new Vector3(-0.5f, -0.5f, 0), Color.Blue);
+            vertices[1] = new VertexPositionColor(new Vector3(0, -0.5f, 0), Color.Blue);
+            vertices[2] = new VertexPositionColor(new Vector3(-0.5f, 0, 0), Color.Blue);
+            EngineGame.instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, vertices, 0, 1);
         }
 
         public List<sceneTransSquare> squares = new List<sceneTransSquare>();

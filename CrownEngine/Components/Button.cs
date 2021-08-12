@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 
-namespace CrownEngine.Engine
+namespace CrownEngine
 {
     public class Button : Component
     {
