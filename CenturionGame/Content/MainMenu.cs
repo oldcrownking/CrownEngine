@@ -24,7 +24,7 @@ namespace CenturionGame.Content
 
         public override void Load()
         {
-            Actor logo = new Actor(new Vector2(2, 5), this); //yea?
+            Actor logo = new Actor(new Vector2(2, 5), this);
 
             logo.width = 60;
             logo.height = 25;
