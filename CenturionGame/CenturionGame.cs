@@ -31,11 +31,6 @@ namespace CenturionGame
                 Textures[Path.GetFileName(fixedPath)] = Texture2D.FromStream(GraphicsDevice, File.OpenRead(file));
             }
 
-            foreach (KeyValuePair<string, Texture2D> str in Textures)
-            {
-                Debug.WriteLine(str.Value);
-            }
-
             InitializeStages(new List<Stage>()
             {
                 new MainMenu(),

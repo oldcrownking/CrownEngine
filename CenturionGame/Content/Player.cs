@@ -33,11 +33,6 @@ namespace CenturionGame.Content
 
         public override void Load()
         {
-            /*SpriteRenderer spriteRenderer = new SpriteRenderer(true, this);
-
-            spriteRenderer.tex = EngineHelpers.GetTexture("Player");
-
-            AddComponent(spriteRenderer);*/
             AddComponent(new Rigidbody(this));
             AddComponent(new BoxCollider(this));
 

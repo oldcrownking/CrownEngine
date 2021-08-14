@@ -43,6 +43,9 @@ namespace CrownEngine
         public MouseState oldMouseState;
         public MouseState mouseState;
 
+        public Vector2 mousePos;
+        public Vector2 oldMousePos;
+
         public PrimitiveType primitiveBatch;
 
         public EngineGame()
@@ -100,6 +103,9 @@ namespace CrownEngine
 
             oldMouseState = mouseState;
             mouseState = Mouse.GetState();
+
+            mousePos = (mouseState.Position.ToVector2() / windowScale);
+            oldMousePos = (oldMouseState.Position.ToVector2() / windowScale);
 
             if (keyboardState.IsKeyDown(Keys.Escape))
                 Exit();
