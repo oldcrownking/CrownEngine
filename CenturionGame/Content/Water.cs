@@ -41,7 +41,7 @@ namespace CenturionGame.Content
         {
             if (EngineGame.instance.oldMousePos.Y < position.Y && EngineGame.instance.mousePos.Y >= position.Y)
             {
-                Splash((EngineGame.instance.mouseState.Position.X / EngineGame.instance.windowScale) - (int)position.X, 10f);
+                Splash((EngineGame.instance.mouseState.Position.X / EngineGame.instance.windowScale) - (int)position.X, ((EngineGame.instance.mousePos.Y - position.Y) * 5f).Clamp(0f, 15f));
             }
 
             base.Update();
@@ -132,10 +132,10 @@ namespace CenturionGame.Content
             float[] leftDeltas = new float[waterParticles.Count];
             float[] rightDeltas = new float[waterParticles.Count];
 
-            float spread = 0.25f;
+            float spread = 0.15f;
 
             // do some passes where springs pull on their neighbours
-            for (int j = 0; j < 4; j++)
+            for (int j = 0; j < 8; j++)
             {
                 for (int i = 0; i < waterParticles.Count; i++)
                 {

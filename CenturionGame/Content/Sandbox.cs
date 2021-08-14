@@ -43,9 +43,11 @@ namespace CenturionGame.Content
                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                 }, new List<Texture2D>() { EngineHelpers.GetTexture("Dirt2"), EngineHelpers.GetTexture("Stone2") }, 8));
 
-            AddActor(new Water(new Vector2(14, 76), this, 76, 48));
-
             AddActor(new Tree1(new Vector2(92, 16), this));
+
+            AddActor(new Player(new Vector2(96, 32), this));
+
+            AddActor(new Water(new Vector2(14, 76), this, 76, 48));
 
             AddActor(new SolidTilemap(Vector2.Zero, this, new int[,] {
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -67,8 +69,6 @@ namespace CenturionGame.Content
                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                 }, new List<Texture2D>() { EngineHelpers.GetTexture("Grass"), EngineHelpers.GetTexture("Dirt"), EngineHelpers.GetTexture("Stone") }, 8));
-
-            AddActor(new Player(new Vector2(96, 32), this));
         }
 
         /*public List<sceneTransSquare> squares = new List<sceneTransSquare>();
