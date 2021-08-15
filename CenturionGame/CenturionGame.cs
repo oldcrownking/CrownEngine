@@ -28,7 +28,8 @@ namespace CenturionGame
             foreach (string file in Directory.EnumerateFiles("Content/", "*.png", SearchOption.AllDirectories))
             {
                 string fixedPath = file.Substring(Content.RootDirectory.Length).TrimStart(Path.DirectorySeparatorChar);
-                Textures[Path.GetFileName(fixedPath)] = Texture2D.FromStream(GraphicsDevice, File.OpenRead(file));
+
+                EngineGame.instance.Textures[Path.GetFileName(fixedPath)] = Texture2D.FromStream(GraphicsDevice, File.OpenRead(file));
             }
 
             InitializeStages(new List<Stage>()
@@ -58,9 +59,11 @@ namespace CenturionGame
             base.CustomUpdate();
         }
 
-        public override void CustomDraw()
+        public override void CustomDraw(SpriteBatch spriteBatch)
         {
-            base.CustomDraw();
+            spriteBatch.Draw(EngineHelpers.GetTexture("Cursor"), mousePos * windowScale, null, Color.White, 0f, Vector2.Zero, windowScale, SpriteEffects.None, 0f);
+
+            base.CustomDraw(spriteBatch);
         }
 
         public override void InitializeStages(List<Stage> _stages)

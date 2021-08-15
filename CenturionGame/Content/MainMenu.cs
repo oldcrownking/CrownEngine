@@ -30,7 +30,7 @@ namespace CenturionGame.Content
             logo.height = 20;
 
             logo.AddComponent(new SpriteRenderer(false, logo));
-            logo.GetComponent<SpriteRenderer>().tex = EngineHelpers.GetTexture("GravityGambit");
+            logo.GetComponent<SpriteRenderer>().tex = EngineHelpers.GetTexture("CenturionLogo");
 
             AddActor(logo);
 

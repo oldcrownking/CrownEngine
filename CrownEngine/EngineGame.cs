@@ -146,14 +146,14 @@ namespace CrownEngine
 
             _spriteBatch.Draw(scene, new Rectangle(0, 0, windowWidth * windowScale, windowHeight * windowScale), Color.White);
 
-            CustomDraw();
+            CustomDraw(_spriteBatch);
 
             _spriteBatch.End();
 
             base.Draw(gameTime);
         }
 
-        public virtual void CustomDraw()
+        public virtual void CustomDraw(SpriteBatch spriteBatch)
         {
 
         }

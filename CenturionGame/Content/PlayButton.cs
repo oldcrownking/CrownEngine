@@ -22,7 +22,7 @@ namespace CenturionGame.Content
         {
             SpriteRenderer spriteRenderer = new SpriteRenderer(false, this);
 
-            spriteRenderer.tex = EngineHelpers.GetTexture("PlayButton");
+            spriteRenderer.tex = EngineHelpers.GetTexture("Begin");
 
             AddComponent(spriteRenderer);
             AddComponent(new Button(Centurion.game.mouseState.LeftButton, this));
