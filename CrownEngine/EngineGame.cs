@@ -33,7 +33,7 @@ namespace CrownEngine
 
         public Dictionary<string, Texture2D> Textures = new Dictionary<string, Texture2D>();
 
-        public Dictionary<string, SoundEffect> SoundEffects = new Dictionary<string, SoundEffect>();
+        public Dictionary<string, Effect> Effects = new Dictionary<string, Effect>();
 
         public Random random;
 
@@ -52,7 +52,6 @@ namespace CrownEngine
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;
 
             instance = this;
         }
@@ -61,16 +60,10 @@ namespace CrownEngine
         {
             scene = new RenderTarget2D(GraphicsDevice, windowWidth, windowHeight, false, SurfaceFormat.Color, DepthFormat.None);
 
-            /*foreach (string file in Directory.EnumerateFiles("Content/", "*.wav", SearchOption.AllDirectories))
+            /*foreach (string file in Directory.EnumerateFiles("Content/", "*.fx", SearchOption.AllDirectories))
             {
                 string fixedPath = file.Substring(Content.RootDirectory.Length).TrimStart(Path.DirectorySeparatorChar);
-                SoundEffects[Path.GetFileName(fixedPath)] = SoundEffect.FromStream(TitleContainer.OpenStream(fixedPath));
-            }
-
-
-            foreach (KeyValuePair<string, SoundEffect> fx in SoundEffects)
-            {
-                Debug.WriteLine(fx.Key);
+                Effects[Path.GetFileName(fixedPath)] = Content.Load<Effect>(fixedPath);
             }*/
 
             random = new Random();

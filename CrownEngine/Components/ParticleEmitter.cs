@@ -30,14 +30,23 @@ namespace CrownEngine
 
     public class ParticleComponent
     {
-        public void Update()
+        public virtual void Update()
         {
 
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
 
+        }
+    }
+
+    public class RadialMask : ParticleComponent
+    {
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            //EngineHelpers.DrawAdditive(spriteBatch, )
+            base.Draw(spriteBatch);
         }
     }
 }

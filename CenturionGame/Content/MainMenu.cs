@@ -24,10 +24,10 @@ namespace CenturionGame.Content
 
         public override void Load()
         {
-            Actor logo = new Actor(new Vector2(2, 5), this);
+            Actor logo = new Actor(new Vector2(20, 20), this);
 
-            logo.width = 60;
-            logo.height = 25;
+            logo.width = 107;
+            logo.height = 20;
 
             logo.AddComponent(new SpriteRenderer(false, logo));
             logo.GetComponent<SpriteRenderer>().tex = EngineHelpers.GetTexture("GravityGambit");

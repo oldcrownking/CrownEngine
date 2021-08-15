@@ -18,9 +18,9 @@ namespace CenturionGame
 {
     public class CenturionGame : EngineGame
     {
-        public CenturionGame()
+        public CenturionGame() : base()
         {
-
+            IsMouseVisible = false;
         }
 
         public override void CustomInitialize()
