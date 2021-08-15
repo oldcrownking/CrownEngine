@@ -18,7 +18,6 @@ namespace CenturionGame.Content
         }
 
         private int jumpTimer;
-        private float gravityFactor = 0.3f;
         private float squashHeight;
 
         public float counter;

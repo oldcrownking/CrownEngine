@@ -41,7 +41,7 @@ namespace CenturionGame.Content
         {
             if (EngineGame.instance.oldMousePos.Y < position.Y && EngineGame.instance.mousePos.Y >= position.Y)
             {
-                Splash((EngineGame.instance.mouseState.Position.X / EngineGame.instance.windowScale) - (int)position.X, ((EngineGame.instance.mousePos.Y - position.Y) * 5f).Clamp(0f, 15f));
+                Splash((EngineGame.instance.mouseState.Position.X / EngineGame.instance.windowScale) - (int)position.X, ((EngineGame.instance.mousePos.Y - position.Y) * 2.5f).Clamp(0f, 15f));
             }
 
             base.Update();
@@ -76,10 +76,6 @@ namespace CenturionGame.Content
 
         public BasicEffect effect;
 
-        public Vector2 ToPrimCoordinates(Vector2 point) => new Vector2(
-            (point.X - (EngineGame.instance.windowWidth / 2)) / (EngineGame.instance.windowWidth / 2),
-            (point.Y - (EngineGame.instance.windowHeight / 2)) / (-EngineGame.instance.windowHeight / 2));
-
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
@@ -101,27 +97,50 @@ namespace CenturionGame.Content
 
                 VertexPositionColor[] vertices = new VertexPositionColor[3];
 
-                Vector2 thisParticle = ToPrimCoordinates(new Vector2(p.x, p.y));
-                Vector2 nextParticle = ToPrimCoordinates(new Vector2(waterParticles[i + 1].x, waterParticles[i + 1].y));
+                Vector2 thisParticle = EngineHelpers.ToPrimCoordinates(new Vector2(p.x, p.y));
+                Vector2 nextParticle = EngineHelpers.ToPrimCoordinates(new Vector2(waterParticles[i + 1].x, waterParticles[i + 1].y));
 
-                Vector2 belowThisParticle = ToPrimCoordinates(new Vector2(p.x, p.restingHeight + depth));
-                Vector2 belowNextParticle = ToPrimCoordinates(new Vector2(waterParticles[i + 1].x, waterParticles[i + 1].restingHeight + depth));
+                Vector2 midThisParticle = EngineHelpers.ToPrimCoordinates(new Vector2(p.x, p.restingHeight + (depth * 0.2f)));
+                Vector2 midNextParticle = EngineHelpers.ToPrimCoordinates(new Vector2(waterParticles[i + 1].x, waterParticles[i + 1].restingHeight + (depth * 0.2f)));
+
+                Vector2 belowThisParticle = EngineHelpers.ToPrimCoordinates(new Vector2(p.x, p.restingHeight + depth));
+                Vector2 belowNextParticle = EngineHelpers.ToPrimCoordinates(new Vector2(waterParticles[i + 1].x, waterParticles[i + 1].restingHeight + depth));
 
 
                 //Triangle between both surface points and the bottom point below this particle
 
                 vertices[0] = new VertexPositionColor(new Vector3(thisParticle.X, thisParticle.Y, 0), Color.LightCyan * 0.75f);
                 vertices[1] = new VertexPositionColor(new Vector3(nextParticle.X, nextParticle.Y, 0), Color.LightCyan * 0.75f);
-                vertices[2] = new VertexPositionColor(new Vector3(belowThisParticle.X, belowThisParticle.Y, 0), Color.DarkCyan * 0.75f);
+                vertices[2] = new VertexPositionColor(new Vector3(midThisParticle.X, midThisParticle.Y, 0), Color.Cyan * 0.75f);
 
                 EngineGame.instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, vertices, 0, 1);
 
 
                 //Triangle between both bottom points and the surface point of the next particle
 
-                vertices[0] = new VertexPositionColor(new Vector3(belowThisParticle.X, belowThisParticle.Y, 0), Color.DarkCyan * 0.75f);
-                vertices[1] = new VertexPositionColor(new Vector3(belowNextParticle.X, belowNextParticle.Y, 0), Color.DarkCyan * 0.75f);
+                vertices[0] = new VertexPositionColor(new Vector3(midThisParticle.X, midThisParticle.Y, 0), Color.Cyan * 0.75f);
+                vertices[1] = new VertexPositionColor(new Vector3(midNextParticle.X, midNextParticle.Y, 0), Color.Cyan * 0.75f);
                 vertices[2] = new VertexPositionColor(new Vector3(nextParticle.X, nextParticle.Y, 0), Color.LightCyan * 0.75f);
+
+                EngineGame.instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, vertices, 0, 1);
+
+
+
+
+                //Triangle between both surface points and the bottom point below this particle
+
+                vertices[0] = new VertexPositionColor(new Vector3(midThisParticle.X, midThisParticle.Y, 0), Color.Cyan * 0.75f);
+                vertices[1] = new VertexPositionColor(new Vector3(midNextParticle.X, midNextParticle.Y, 0), Color.Cyan * 0.75f);
+                vertices[2] = new VertexPositionColor(new Vector3(belowThisParticle.X, belowThisParticle.Y, 0), Color.DeepSkyBlue * 0.75f);
+
+                EngineGame.instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, vertices, 0, 1);
+
+
+                //Triangle between both bottom points and the surface point of the next particle
+
+                vertices[0] = new VertexPositionColor(new Vector3(belowThisParticle.X, belowThisParticle.Y, 0), Color.DeepSkyBlue * 0.75f);
+                vertices[1] = new VertexPositionColor(new Vector3(belowNextParticle.X, belowNextParticle.Y, 0), Color.DeepSkyBlue * 0.75f);
+                vertices[2] = new VertexPositionColor(new Vector3(midNextParticle.X, midNextParticle.Y, 0), Color.Cyan * 0.75f);
 
                 EngineGame.instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, vertices, 0, 1);
             }

@@ -40,8 +40,8 @@ namespace CenturionGame
             base.CustomInitialize();
         }
 
-        public override int windowHeight => 144;
-        public override int windowWidth => 256;
+        public override int windowHeight => 180;
+        public override int windowWidth => 320;
         public override int windowScale => 2;
 
         public override void CustomUpdate()
