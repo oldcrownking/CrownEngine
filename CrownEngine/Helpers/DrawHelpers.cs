@@ -20,7 +20,7 @@ namespace CrownEngine
             spriteBatch.Begin(SpriteSortMode.Deferred, null);
         }
 
-        public static void DrawPrimitive(Vector2 vec1, Color color1, Vector2 vec2, Color color2, Vector2 vec3, Color color3)
+        public static void DrawPrimitive(Vector2 vec1, Vector2 vec2, Vector2 vec3, Color color1, Color color2, Color color3)
         {
             VertexPositionColor[] vertices = new VertexPositionColor[3];
 

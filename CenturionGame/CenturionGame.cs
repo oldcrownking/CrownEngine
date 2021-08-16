@@ -59,16 +59,16 @@ namespace CenturionGame
             base.CustomUpdate();
         }
 
-        public override void CustomDraw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(EngineHelpers.GetTexture("Cursor"), mousePos * windowScale, null, Color.White, 0f, Vector2.Zero, windowScale, SpriteEffects.None, 0f);
-
-            base.CustomDraw(spriteBatch);
-        }
-
         public override void InitializeStages(List<Stage> _stages)
         {
             base.InitializeStages(_stages);
+        }
+
+        public override void CustomPostDraw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(EngineHelpers.GetTexture("Cursor"), mousePos * windowScale, null, Color.White, 0f, Vector2.Zero, windowScale, SpriteEffects.None, 0f);
+
+            base.CustomPostDraw(spriteBatch);
         }
     }
 }

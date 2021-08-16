@@ -39,9 +39,15 @@ namespace CenturionGame.Content
 
         public override void Update()
         {
-            if (EngineGame.instance.oldMousePos.Y < position.Y && EngineGame.instance.mousePos.Y >= position.Y)
+            foreach(Actor actor in myStage.actors)
             {
-                Splash((EngineGame.instance.mouseState.Position.X / EngineGame.instance.windowScale) - (int)position.X, ((EngineGame.instance.mousePos.Y - position.Y) * 2.5f).Clamp(0f, 15f));
+                if(actor.HasComponent<Rigidbody>())
+                {
+                    if (actor.Center.Y + actor.GetComponent<Rigidbody>().velocity.Y >= position.Y && actor.Center.Y < position.Y) 
+                    {
+                        Splash((int)actor.Center.X - (int)position.X, ((actor.GetComponent<Rigidbody>().velocity.Y) * 3f).Clamp(0f, 15f));
+                    }
+                }
             }
 
             base.Update();
@@ -95,66 +101,36 @@ namespace CenturionGame.Content
             {
                 WaterParticle p = waterParticles[i];
 
-                VertexPositionColor[] vertices = new VertexPositionColor[3];
-
                 Vector2 thisParticle = EngineHelpers.ToPrimCoordinates(new Vector2(p.x, p.y));
                 Vector2 nextParticle = EngineHelpers.ToPrimCoordinates(new Vector2(waterParticles[i + 1].x, waterParticles[i + 1].y));
 
-                Vector2 midThisParticle = EngineHelpers.ToPrimCoordinates(new Vector2(p.x, p.restingHeight + (depth * 0.2f)));
-                Vector2 midNextParticle = EngineHelpers.ToPrimCoordinates(new Vector2(waterParticles[i + 1].x, waterParticles[i + 1].restingHeight + (depth * 0.2f)));
+                Vector2 midThisParticle = EngineHelpers.ToPrimCoordinates(new Vector2(p.x, p.y + (depth * 0.2f)));
+                Vector2 midNextParticle = EngineHelpers.ToPrimCoordinates(new Vector2(waterParticles[i + 1].x, waterParticles[i + 1].y + (depth * 0.2f)));
 
                 Vector2 belowThisParticle = EngineHelpers.ToPrimCoordinates(new Vector2(p.x, p.restingHeight + depth));
                 Vector2 belowNextParticle = EngineHelpers.ToPrimCoordinates(new Vector2(waterParticles[i + 1].x, waterParticles[i + 1].restingHeight + depth));
 
 
-                //Triangle between both surface points and the bottom point below this particle
+                EngineHelpers.DrawPrimitive(thisParticle, nextParticle, midThisParticle, Color.LightCyan * 0.75f, Color.LightCyan * 0.75f, Color.Cyan * 0.75f);
 
-                vertices[0] = new VertexPositionColor(new Vector3(thisParticle.X, thisParticle.Y, 0), Color.LightCyan * 0.75f);
-                vertices[1] = new VertexPositionColor(new Vector3(nextParticle.X, nextParticle.Y, 0), Color.LightCyan * 0.75f);
-                vertices[2] = new VertexPositionColor(new Vector3(midThisParticle.X, midThisParticle.Y, 0), Color.Cyan * 0.75f);
-
-                EngineGame.instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, vertices, 0, 1);
+                EngineHelpers.DrawPrimitive(midThisParticle, midNextParticle, nextParticle, Color.Cyan * 0.75f, Color.Cyan * 0.75f, Color.LightCyan * 0.75f);
 
 
-                //Triangle between both bottom points and the surface point of the next particle
+                EngineHelpers.DrawPrimitive(midThisParticle, midNextParticle, belowThisParticle, Color.Cyan * 0.75f, Color.Cyan * 0.75f, Color.DeepSkyBlue * 0.75f);
 
-                vertices[0] = new VertexPositionColor(new Vector3(midThisParticle.X, midThisParticle.Y, 0), Color.Cyan * 0.75f);
-                vertices[1] = new VertexPositionColor(new Vector3(midNextParticle.X, midNextParticle.Y, 0), Color.Cyan * 0.75f);
-                vertices[2] = new VertexPositionColor(new Vector3(nextParticle.X, nextParticle.Y, 0), Color.LightCyan * 0.75f);
-
-                EngineGame.instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, vertices, 0, 1);
-
-
-
-
-                //Triangle between both surface points and the bottom point below this particle
-
-                vertices[0] = new VertexPositionColor(new Vector3(midThisParticle.X, midThisParticle.Y, 0), Color.Cyan * 0.75f);
-                vertices[1] = new VertexPositionColor(new Vector3(midNextParticle.X, midNextParticle.Y, 0), Color.Cyan * 0.75f);
-                vertices[2] = new VertexPositionColor(new Vector3(belowThisParticle.X, belowThisParticle.Y, 0), Color.DeepSkyBlue * 0.75f);
-
-                EngineGame.instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, vertices, 0, 1);
-
-
-                //Triangle between both bottom points and the surface point of the next particle
-
-                vertices[0] = new VertexPositionColor(new Vector3(belowThisParticle.X, belowThisParticle.Y, 0), Color.DeepSkyBlue * 0.75f);
-                vertices[1] = new VertexPositionColor(new Vector3(belowNextParticle.X, belowNextParticle.Y, 0), Color.DeepSkyBlue * 0.75f);
-                vertices[2] = new VertexPositionColor(new Vector3(midNextParticle.X, midNextParticle.Y, 0), Color.Cyan * 0.75f);
-
-                EngineGame.instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, vertices, 0, 1);
+                EngineHelpers.DrawPrimitive(belowThisParticle, belowNextParticle, midNextParticle, Color.DeepSkyBlue * 0.75f, Color.DeepSkyBlue * 0.75f, Color.Cyan * 0.75f);
             }
 
             spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone);
 
             float[] leftDeltas = new float[waterParticles.Count];
             float[] rightDeltas = new float[waterParticles.Count];
 
-            float spread = 0.15f;
+            float spread = 0.1f;
 
             // do some passes where springs pull on their neighbours
-            for (int j = 0; j < 8; j++)
+            for (int j = 0; j < 4; j++)
             {
                 for (int i = 0; i < waterParticles.Count; i++)
                 {
@@ -198,6 +174,9 @@ namespace CenturionGame.Content
                     }
                 }
             }
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone);
 
             //water code largely from https://gamedevelopment.tutsplus.com/tutorials/make-a-splash-with-dynamic-2d-water-effects--gamedev-236
         }

@@ -33,7 +33,7 @@ namespace CrownEngine
 
         public Dictionary<string, Texture2D> Textures = new Dictionary<string, Texture2D>();
 
-        public Dictionary<string, Effect> Effects = new Dictionary<string, Effect>();
+        //public Dictionary<string, Effect> Effects = new Dictionary<string, Effect>();
 
         public Random random;
 
@@ -122,11 +122,11 @@ namespace CrownEngine
 
             _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone);
 
+            activeStage.PreDraw(_spriteBatch);
 
             activeStage.Draw(_spriteBatch);
 
-
-            _spriteBatch.End();
+            activeStage.PostDraw(_spriteBatch);
 
             // Drop the render target
             GraphicsDevice.SetRenderTarget(null);
@@ -142,18 +142,19 @@ namespace CrownEngine
 
             DrawSceneToTexture(scene);
 
+            _spriteBatch.End();
             _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone);
 
             _spriteBatch.Draw(scene, new Rectangle(0, 0, windowWidth * windowScale, windowHeight * windowScale), Color.White);
 
-            CustomDraw(_spriteBatch);
+            CustomPostDraw(_spriteBatch);
 
             _spriteBatch.End();
 
             base.Draw(gameTime);
         }
 
-        public virtual void CustomDraw(SpriteBatch spriteBatch)
+        public virtual void CustomPostDraw(SpriteBatch spriteBatch)
         {
 
         }
