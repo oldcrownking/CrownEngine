@@ -10,9 +10,9 @@ namespace CrownEngine
 {
     public class BoxCollider : Component
     {
-        public bool trigger;
-
         public Rectangle hitbox => new Rectangle((int)myActor.position.X, (int)myActor.position.Y, myActor.width, myActor.height);
+
+        public bool active;
 
         public BoxCollider(Actor myActor) : base(myActor)
         {

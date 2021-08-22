@@ -29,9 +29,8 @@ namespace CrownEngine
         public Stage activeStage;
         public List<Stage> stages = new List<Stage>();
 
-        public Texture2D MissingTexture;
-
         public Dictionary<string, Texture2D> Textures = new Dictionary<string, Texture2D>();
+        public Dictionary<string, SoundEffect> Audio = new Dictionary<string, SoundEffect>();
 
         //public Dictionary<string, Effect> Effects = new Dictionary<string, Effect>();
 
@@ -47,6 +46,8 @@ namespace CrownEngine
         public Vector2 oldMousePos;
 
         public PrimitiveType primitiveBatch;
+
+        public Effect outlineEffect;
 
         public EngineGame()
         {
@@ -69,6 +70,8 @@ namespace CrownEngine
             random = new Random();
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            outlineEffect = Content.Load<Effect>("Outline");
 
             CustomInitialize();
 

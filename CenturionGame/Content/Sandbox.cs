@@ -114,6 +114,8 @@ namespace CenturionGame.Content
             }
 
             AddActor(tilemap);
+
+            AddActor(new TestParticleEmitter(new Vector2(EngineGame.instance.windowWidth / 2, EngineGame.instance.windowHeight / 2), this));
         }
 
         /*public List<sceneTransSquare> squares = new List<sceneTransSquare>();
