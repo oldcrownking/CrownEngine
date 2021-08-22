@@ -43,6 +43,8 @@ namespace CrownEngine
         {
             foreach (Component component in components)
             {
+                component.myActor = this;
+
                 component.Update();
             }
         }
@@ -51,6 +53,8 @@ namespace CrownEngine
         {
             foreach (Component component in components)
             {
+                component.myActor = this;
+
                 component.Draw(spriteBatch);
             }
         }

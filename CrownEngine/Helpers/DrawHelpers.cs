@@ -61,12 +61,10 @@ namespace CrownEngine
             EngineGame.instance.outlineEffect.Parameters["alpha"].SetValue(alpha);
             EngineGame.instance.outlineEffect.Parameters["color"].SetValue((new Vector3(color.R, color.G, color.B) / 255f) * alpha);
 
-            alpha = MathHelper.Clamp(alpha, 0f, 1f);
-
             for (int i = 0; i < 4; i++)
             {
-                Vector2 offsetPositon = Vector2.UnitY.RotatedBy(MathHelper.PiOver2 * i) * (2 * (alpha / 1) * ((255 - alpha) / 255f));
-                spriteBatch.Draw(tex, pos + offsetPositon, null, Color.White * alpha * ((255 - alpha) / 255f), rotation, tex.Bounds.Size.ToVector2() * 0.5f, scale, SpriteEffects.None, 0f);
+                Vector2 offsetPositon = Vector2.UnitY.RotatedBy((MathHelper.PiOver2 * i)) * 4;
+                spriteBatch.Draw(tex, pos + offsetPositon, null, color * alpha, rotation, tex.Bounds.Size.ToVector2() * 0.5f, scale, SpriteEffects.None, 0f);
             }
 
             spriteBatch.End();

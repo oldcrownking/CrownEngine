@@ -128,7 +128,6 @@ namespace CenturionGame.Content
             }
 
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone);
 
             float[] leftDeltas = new float[waterParticles.Count];
             float[] rightDeltas = new float[waterParticles.Count];
@@ -181,7 +180,6 @@ namespace CenturionGame.Content
                 }
             }
 
-            spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone);
 
             //water code largely from https://gamedevelopment.tutsplus.com/tutorials/make-a-splash-with-dynamic-2d-water-effects--gamedev-236

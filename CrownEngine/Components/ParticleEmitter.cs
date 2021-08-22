@@ -54,7 +54,7 @@ namespace CrownEngine
 
             if(EngineHelpers.NextBool(emissionRate))
             {
-                particles.Add(new Particle(myActor.position, Vector2.UnitY.RotatedBy(EngineHelpers.NextFloat(6.28f)) * 2f, particleTex, particleColor, particleScale, 60, particleAlpha, components));
+                particles.Add(new Particle(myActor.Center, Vector2.UnitY.RotatedBy(EngineHelpers.NextFloat(6.28f)) * 2f, particleTex, particleColor, particleScale, 60, particleAlpha, components));
             }
 
             base.Update();
