@@ -37,7 +37,7 @@ namespace Twinshot.Content
 
         public int ticks;
         public int preTicks;
-        public int wave = -3;
+        public float wave = -2;
 
         AKey akey;
         DKey dkey;
@@ -45,10 +45,10 @@ namespace Twinshot.Content
 
         public override void Update()
         {
+            preTicks++;
+
             if (wave < 0) 
             { 
-                preTicks++;
-
                 if (preTicks % 5 == 0) AddActor(new Star(new Vector2(EngineHelpers.Next(0, 64), -3), this, EngineHelpers.Next(15, 30), EngineHelpers.NextFloat(0.25f, 3f)));
             }
 
@@ -56,26 +56,23 @@ namespace Twinshot.Content
             {
                 if (ticks % 5 == 0) AddActor(new Star(new Vector2(EngineHelpers.Next(0, 64), -3), this, EngineHelpers.Next(15, 30), EngineHelpers.NextFloat(0.25f, 3f)));
 
-                if (ticks % 300 == 0)
+                if (ticks > 300 && AllEnemiesDefeated())
                 {
-                    SpawnWave(wave);
+                    ticks = 0;
+                    
+                    SpawnWave((int)wave);
                     wave++;
                 }
 
                 ticks++;
             }
 
-            if (preTicks >= 90 && akey == default && wave == -3)
+            if (preTicks >= 120 && akey == default && dkey == default && wave == -2)
             {
                 akey = new AKey(new Vector2(-9, 114), this);
-
-                AddActor(akey);
-            }
-
-            if (preTicks >= 90 && dkey == default && wave == -2)
-            {
                 dkey = new DKey(new Vector2(64, 114), this);
 
+                AddActor(akey);
                 AddActor(dkey);
             }
 
@@ -112,7 +109,33 @@ namespace Twinshot.Content
                     AddActor(new EnemyShip(new Vector2(4 + i * 12, -13), this));
             }
 
-            Debug.WriteLine("spawning wave!");
+            if (_wave == 3)
+            {
+                AddActor(new EnemyShip2(new Vector2(27, -15), this));
+            }
+
+            if (_wave == 4)
+            {
+                for (int i = 0; i < 2; i++)
+                    AddActor(new EnemyShip2(new Vector2(20 + i * 12, -15), this));
+            }
+
+            //Spawn shop
+
+            if (_wave == 5)
+            {
+                AddActor(new EnemyShip3(new Vector2(16, -16), this));
+            }
+        }
+
+        public bool AllEnemiesDefeated()
+        {
+            foreach(Actor actor in actors)
+            {
+                if (actor != null && actor.GetType().Name.Contains("EnemyShip")) return false;
+            }
+
+            return true;
         }
     }
 }

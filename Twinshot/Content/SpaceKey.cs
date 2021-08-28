@@ -54,13 +54,15 @@ namespace Twinshot.Content
 
                     if (health > 0)
                     {
-                        EngineHelpers.GetSound("EnemyHit").Play();
+                        EngineHelpers.GetSound("EnemyHit" + EngineHelpers.Next(3)).Play();
                     }
                     else
                     {
                         myStage.AddActor(new SmokeBurst(Center, myStage));
 
-                        EngineHelpers.GetSound("EnemyKilled").Play();
+                        myStage.AddActor(new Nut(Center + new Vector2(-3, -3), myStage));
+
+                        EngineHelpers.GetSound("EnemyKilled" + EngineHelpers.Next(3)).Play();
 
                         (myStage as GameStage).wave++;
 

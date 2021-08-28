@@ -11,9 +11,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Twinshot.Content
 {
-    class PlayerBolt : Actor
+    class EnemyBolt : Actor
     {
-        public PlayerBolt(Vector2 pos, Stage myStage) : base(pos, myStage)
+        public EnemyBolt(Vector2 pos, Stage myStage) : base(pos, myStage)
         {
 
         }
@@ -22,19 +22,19 @@ namespace Twinshot.Content
         {
             SpriteRenderer spriteRenderer = new SpriteRenderer(false, this);
 
-            spriteRenderer.tex = EngineHelpers.GetTexture("PlayerBolt");
+            spriteRenderer.tex = EngineHelpers.GetTexture("EnemyBolt");
 
             AddComponent(spriteRenderer);
             AddComponent(new Rigidbody(this));
             AddComponent(new BoxTrigger(this));
 
-            width = 2;
-            height = 4;
+            width = 6;
+            height = 6;
         }
 
         public override void Update()
         {
-            GetComponent<Rigidbody>().velocity.Y = -4;
+            GetComponent<Rigidbody>().velocity.Y = 2;
 
             base.Update();
         }

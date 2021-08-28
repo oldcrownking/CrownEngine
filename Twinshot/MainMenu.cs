@@ -24,6 +24,8 @@ namespace Twinshot.Content
         public bool loading;
         public override void Draw(SpriteBatch spriteBatch)
         {
+            base.Draw(spriteBatch);
+
             if (loading)
             {
                 ticks++;
@@ -34,8 +36,6 @@ namespace Twinshot.Content
             }
 
             if(coverHeight >= 128 && loading) EngineHelpers.SwitchStages(1);
-
-            base.Draw(spriteBatch);
         }
 
         PlayButton playButton;

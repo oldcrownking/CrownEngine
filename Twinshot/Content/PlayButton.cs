@@ -32,9 +32,9 @@ namespace Twinshot.Content
 
         public override void Update()
         {
-            if (GetComponent<Button>().pressed)
+            if (rect.Contains(EngineGame.instance.mouseState.Position.ToVector2() / EngineGame.instance.windowScale))
             {
-                GetComponent<SpriteRenderer>().frame = new Point(0, 1);
+                GetComponent<SpriteRenderer>().frame = new Point(1, 0);
             }
             else
             {

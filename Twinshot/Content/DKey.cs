@@ -49,7 +49,7 @@ namespace Twinshot.Content
                 GetComponent<Rigidbody>().velocity.X += 0.1f;
                 if (position.X >= 64) 
                 {
-                    (myStage as GameStage).wave++;
+                    (myStage as GameStage).wave += 0.5f;
 
                     Kill();
                 }

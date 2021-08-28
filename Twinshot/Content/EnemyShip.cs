@@ -47,7 +47,7 @@ namespace Twinshot.Content
             {
                 if (GetComponent<BoxTrigger>().triggers[i] != null && GetComponent<BoxTrigger>().triggerNames[i] == "PlayerBolt")
                 {
-                    EngineHelpers.GetSound("EnemyKilled").Play();
+                    EngineHelpers.GetSound("EnemyKilled" + EngineHelpers.Next(3)).Play();
 
                     GetComponent<BoxTrigger>().triggers[0].Kill();
 

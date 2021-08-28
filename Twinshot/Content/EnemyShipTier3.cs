@@ -11,9 +11,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Twinshot.Content
 {
-    class EnemyShip2 : Actor
+    class EnemyShip3 : Actor
     {
-        public EnemyShip2(Vector2 pos, Stage myStage) : base(pos, myStage)
+        public EnemyShip3(Vector2 pos, Stage myStage) : base(pos, myStage)
         {
 
         }
@@ -22,25 +22,32 @@ namespace Twinshot.Content
         {
             SpriteRenderer spriteRenderer = new SpriteRenderer(false, this);
 
-            spriteRenderer.tex = EngineHelpers.GetTexture("EnemyShipTier2");
+            spriteRenderer.tex = EngineHelpers.GetTexture("EnemyShipTier3");
 
             AddComponent(spriteRenderer);
             AddComponent(new Rigidbody(this));
             AddComponent(new BoxTrigger(this));
 
-            width = 10;
-            height = 15;
+            width = 12;
+            height = 16;
         }
 
         public int ticks;
-        public int health = 2;
+        public int health = 1;
         public override void Update()
         {
             ticks++;
 
-            GetComponent<Rigidbody>().velocity.Y = 0.4f;
+            GetComponent<Rigidbody>().velocity.Y = 0.2f;
 
-            GetComponent<Rigidbody>().velocity.X = (float)Math.Sin(ticks / 20f) / 4f;
+            GetComponent<Rigidbody>().velocity.X = (float)Math.Sin(ticks / 20f) / 2f;
+
+            if(ticks % 60 == 0)
+            {
+                myStage.AddActor(new EnemyBolt(Center + new Vector2(-3, 8), myStage));
+
+                EngineHelpers.GetSound("LaserShoot").Play();
+            }
 
             base.Update();
 

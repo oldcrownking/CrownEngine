@@ -84,7 +84,7 @@ namespace Twinshot
 
         public override void CustomPostDraw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(EngineHelpers.GetTexture("Cursor"), mousePos * windowScale, null, Color.White, 0f, Vector2.Zero, windowScale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(EngineHelpers.GetTexture("Cursor"), mousePos * windowScale, new Rectangle(0, 0, 7, 10), Color.White, 0f, Vector2.Zero, windowScale, SpriteEffects.None, 0f);
 
             base.CustomPostDraw(spriteBatch);
         }

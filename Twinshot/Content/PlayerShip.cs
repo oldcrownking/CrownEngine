@@ -43,7 +43,7 @@ namespace Twinshot.Content
                 GetComponent<Rigidbody>().velocity.X += 0.1f;
 
             if (!EngineGame.instance.keyboardState.IsKeyDown(Keys.A) && !EngineGame.instance.keyboardState.IsKeyDown(Keys.D))
-                GetComponent<Rigidbody>().velocity.X *= 0.95f;
+                GetComponent<Rigidbody>().velocity.X *= 0.93f;
 
             if (EngineGame.instance.keyboardState.IsKeyDown(Keys.Space) && !EngineGame.instance.oldKeyboardState.IsKeyDown(Keys.Space) && shotCooldown <= 0)
             {
