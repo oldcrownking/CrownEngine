@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace CrownEngine
 {
@@ -15,14 +17,15 @@ namespace CrownEngine
         public float emissionRate;
         public EmissionTypeID emissionType;
 
-        public List<ParticleComponent> components = new List<ParticleComponent>();
+        public ParticleComponent[] components;
 
         public Texture2D particleTex;
         public Color particleColor;
         public float particleScale;
         public float particleAlpha;
+        public int particleLifetime;
 
-        public ParticleEmitter(Actor myActor, List<ParticleComponent> _components, EmissionTypeID _emissionType, float _emissionRate) : base(myActor)
+        public ParticleEmitter(Actor myActor, EmissionTypeID _emissionType, float _emissionRate, params ParticleComponent[] _components) : base(myActor)
         {
             components = _components;
             emissionType = _emissionType;
@@ -41,20 +44,42 @@ namespace CrownEngine
 
         public override void Update()
         {
-            for(int i = 0; i < particles.Count; i++)
+            if (emissionRate <= 1 && EngineHelpers.NextBool(emissionRate))
             {
-                Particle p = particles[i];
+                Particle p = new Particle(myActor.position,
+                    Vector2.UnitY.RotatedBy(EngineHelpers.NextFloat(6.28f)) * 2f,
+                    particleTex,
+                    particleColor,
+                    particleScale, 
+                    particleLifetime,
+                    particleAlpha,
+                    components);
 
-                p.Update();
-
-                particles[i] = p;
-
-                if (particles[i].timeLeft <= 0) particles.RemoveAt(i);
+                particles.Add(p);
             }
 
-            if(EngineHelpers.NextBool(emissionRate))
+            if(emissionRate > 1)
             {
-                particles.Add(new Particle(myActor.Center, Vector2.UnitY.RotatedBy(EngineHelpers.NextFloat(6.28f)) * 2f, particleTex, particleColor, particleScale, 60, particleAlpha, components));
+                for(int i = 0; i < (int)emissionRate; i++)
+                {
+                    Particle p = new Particle(myActor.position,
+                        Vector2.UnitY.RotatedBy(EngineHelpers.NextFloat(6.28f)) * 2f,
+                        particleTex,
+                        particleColor,
+                        particleScale,
+                        particleLifetime,
+                        particleAlpha,
+                        components);
+
+                    particles.Add(p);
+                }
+            }
+
+            for (int i = 0; i < particles.Count; i++)
+            {
+                particles[i].Update();
+
+                if (particles[i].timeLeft <= 0) particles.RemoveAt(i);
             }
 
             base.Update();
@@ -64,11 +89,7 @@ namespace CrownEngine
         {
             for (int i = 0; i < particles.Count; i++)
             {
-                Particle p = particles[i];
-
-                p.Draw(spriteBatch);
-
-                particles[i] = p;
+                particles[i].Draw(spriteBatch);
             }
 
             base.Draw(spriteBatch);
@@ -96,13 +117,13 @@ namespace CrownEngine
 
         public float alpha;
 
-        public List<ParticleComponent> components;
+        public ParticleComponent[] components;
 
         public int timeLeft;
 
         public Vector2 Center => position + new Vector2(tex.Width / 2, tex.Height / 2);
 
-        public Particle(Vector2 pos, Vector2 vel, Texture2D _tex, Color _color, float _scale, int _timeLeft, float _alpha, List<ParticleComponent> _components)
+        public Particle(Vector2 pos, Vector2 vel, Texture2D _tex, Color _color, float _scale, int _timeLeft, float _alpha, params ParticleComponent[] _components)
         {
             position = pos;
             velocity = vel;
@@ -120,15 +141,11 @@ namespace CrownEngine
 
         public void Update()
         {
-            for (int i = 0; i < components.Count; i++)
+            for (int i = 0; i < components.Length; i++)
             {
-                ParticleComponent component = components[i];
+                components[i].myParticle = this;
 
-                component.myParticle = this;
-
-                component.Update();
-
-                components[i] = component;
+                components[i].Update();
             }
 
             position += velocity;
@@ -138,15 +155,11 @@ namespace CrownEngine
         
         public void Draw(SpriteBatch spriteBatch)
         {
-            for (int i = 0; i < components.Count; i++)
+            for (int i = 0; i < components.Length; i++)
             {
-                ParticleComponent component = components[i];
+                components[i].myParticle = this;
 
-                component.myParticle = this;
-
-                component.Draw(spriteBatch);
-
-                components[i] = component;
+                components[i].Draw(spriteBatch);
             }
 
             spriteBatch.Draw(tex, position, null, color * alpha, rotation, Vector2.Zero, scale, SpriteEffects.None, 0f);
@@ -191,6 +204,39 @@ namespace CrownEngine
         }
     }
 
+    public class RadialMaskLerped : ParticleComponent
+    {
+        public Color color1;
+        public Color color2;
+
+        public float scale;
+
+        private float total = 0;
+
+        public float rate;
+
+        public RadialMaskLerped(Color _color1, Color _color2, float _rate, float _scale)
+        {
+            rate = _rate;
+
+            total = 0;
+
+            color1 = _color1;
+            color2 = _color2;
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            Color myColor = Color.Lerp(color1, color2, total);
+
+            total += rate;
+
+            EngineHelpers.DrawAdditive(spriteBatch, EngineHelpers.GetTexture("RadialGradient"), myParticle.Center, myColor * myParticle.alpha, scale);
+
+            base.Draw(spriteBatch);
+        }
+    }
+
     public class SlowDown : ParticleComponent
     {
         public float rate;
@@ -208,14 +254,32 @@ namespace CrownEngine
         }
     }
 
+    public class SizeOverTime : ParticleComponent
+    {
+        public float rate;
+
+        public SizeOverTime(float _rate)
+        {
+            rate = _rate;
+        }
+
+        public override void Update()
+        {
+            myParticle.scale *= rate;
+
+            base.Update();
+        }
+    }
+
     public class ColorLerp : ParticleComponent
     {
         public float rate;
 
-        private float total;
+        private float total = 0;
 
         public Color color1;
         public Color color2;
+
         public ColorLerp(float _rate, Color _color1, Color _color2)
         {
             rate = _rate;

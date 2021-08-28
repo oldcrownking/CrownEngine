@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 
 namespace CrownEngine
 {
@@ -46,10 +47,9 @@ namespace CrownEngine
             (point.X - (EngineGame.instance.windowWidth / 2)) / (EngineGame.instance.windowWidth / 2),
             (point.Y - (EngineGame.instance.windowHeight / 2)) / (-EngineGame.instance.windowHeight / 2));
 
-        public static Texture2D GetTexture(string name)
-        {
-            return EngineGame.instance.Textures[name + ".png"];
-        }
+        public static Texture2D GetTexture(string name) => EngineGame.instance.Textures[name + ".png"];
+
+        public static SoundEffect GetSound(string name) =>EngineGame.instance.Audio[name + ".wav"];
 
         public static void DrawOutline(SpriteBatch spriteBatch, float alpha, Color color, Texture2D tex, Vector2 pos, float rotation, float scale)
         {
@@ -63,7 +63,7 @@ namespace CrownEngine
 
             for (int i = 0; i < 4; i++)
             {
-                Vector2 offsetPositon = Vector2.UnitY.RotatedBy((MathHelper.PiOver2 * i)) * 4;
+                Vector2 offsetPositon = Vector2.UnitY.RotatedBy((MathHelper.PiOver2 * i)) * 2;
                 spriteBatch.Draw(tex, pos + offsetPositon, null, color * alpha, rotation, tex.Bounds.Size.ToVector2() * 0.5f, scale, SpriteEffects.None, 0f);
             }
 

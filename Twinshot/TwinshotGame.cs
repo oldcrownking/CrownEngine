@@ -1,7 +1,7 @@
 ﻿using System;
 using CrownEngine;
 using System.Collections.Generic;
-using CenturionGame.Content;
+using Twinshot.Content;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,11 +14,11 @@ using System.IO;
 using Microsoft.Xna.Framework.Audio;
 using System.Diagnostics;
 
-namespace CenturionGame
+namespace Twinshot
 {
-    public class CenturionGame : EngineGame
+    public class TwinshotGame : EngineGame
     {
-        public CenturionGame() : base()
+        public TwinshotGame() : base()
         {
             IsMouseVisible = false;
         }
@@ -53,14 +53,14 @@ namespace CenturionGame
             InitializeStages(new List<Stage>()
             {
                 new MainMenu(),
-                new Sandbox()
+                new GameStage()
             });
 
             base.CustomInitialize();
         }
 
-        public override int windowHeight => 320;
-        public override int windowWidth => 320;
+        public override int windowHeight => 128;
+        public override int windowWidth => 64;
         public override int windowScale => 2;
 
         public override void CustomUpdate()

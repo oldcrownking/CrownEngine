@@ -31,6 +31,7 @@ namespace CrownEngine
 
         public Dictionary<string, Texture2D> Textures = new Dictionary<string, Texture2D>();
         public Dictionary<string, SoundEffect> Audio = new Dictionary<string, SoundEffect>();
+        public Dictionary<string, Effect> Effects = new Dictionary<string, Effect>();
 
         //public Dictionary<string, Effect> Effects = new Dictionary<string, Effect>();
 
@@ -71,7 +72,7 @@ namespace CrownEngine
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            outlineEffect = Content.Load<Effect>("Outline");
+            //outlineEffect = Content.Load<Effect>("Outline");
 
             CustomInitialize();
 

@@ -95,9 +95,6 @@ namespace CenturionGame.Content
                 waterParticles[i] = p;
             }
 
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone);
-
             effect.CurrentTechnique.Passes[0].Apply();
 
             //EngineGame.instance.testEffect.Parameters["Displacement"].SetValue(EngineHelpers.GetTexture("waternormalmap"));

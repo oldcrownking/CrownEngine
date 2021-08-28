@@ -13,13 +13,16 @@ namespace CenturionGame.Content
 {
     public class Sandbox : Stage
     {
-        public override Color bgColor => Color.LightSkyBlue;
+        public override Color bgColor => Color.Black;
 
         public override void Update()
         {
-            if(updateCount % 1200 == 0)
+            if(updateCount % 120 == 0)
             {
-                AddActor(new Cloud1(new Vector2(300, 40 + EngineGame.instance.random.Next(-16, 16)), this));
+                for (int i = 0; i < 8; i++)
+                {
+                    AddActor(new AwesomeBall(new Vector2(EngineGame.instance.windowWidth / 2, EngineGame.instance.windowHeight / 2), this, i, new Vector2(EngineGame.instance.windowWidth / 2, EngineGame.instance.windowHeight / 2)));
+                }
             }
 
             updateCount++;
@@ -36,7 +39,7 @@ namespace CenturionGame.Content
                 VertexColorEnabled = true
             };
 
-            AddActor(new Cloud1(new Vector2(250, 40 + EngineGame.instance.random.Next(-16, 16)), this));
+            /*AddActor(new Cloud1(new Vector2(250, 40 + EngineGame.instance.random.Next(-16, 16)), this));
 
             AddActor(new Cloud1(new Vector2(130, 40 + EngineGame.instance.random.Next(-16, 16)), this));
 
@@ -113,9 +116,12 @@ namespace CenturionGame.Content
                 }
             }
 
-            AddActor(tilemap);
+            AddActor(tilemap);*/
 
-            AddActor(new AwesomeBall(new Vector2(EngineGame.instance.windowWidth / 2, EngineGame.instance.windowHeight / 2), this));
+            for (int i = 0; i < 8; i++)
+            {
+                AddActor(new AwesomeBall(new Vector2(EngineGame.instance.windowWidth / 2, EngineGame.instance.windowHeight / 2), this, i, new Vector2(EngineGame.instance.windowWidth / 2, EngineGame.instance.windowHeight / 2)));
+            }
         }
 
         /*public List<sceneTransSquare> squares = new List<sceneTransSquare>();
@@ -171,14 +177,14 @@ namespace CenturionGame.Content
 
         public override void PreDraw(SpriteBatch spriteBatch)
         {
-            spriteBatch.End();
+            /*spriteBatch.End();
 
             effect.CurrentTechnique.Passes[0].Apply();
 
             EngineHelpers.DrawPrimitive(new Vector2(-1, 1), new Vector2(1, 1), new Vector2(-1, 0), Color.DeepSkyBlue, Color.DeepSkyBlue, Color.LightSkyBlue);
             EngineHelpers.DrawPrimitive(new Vector2(1, 1), new Vector2(-1, 0), new Vector2(1, 0), Color.DeepSkyBlue, Color.LightSkyBlue, Color.LightSkyBlue);
 
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone);*/
 
             base.PreDraw(spriteBatch);
         }

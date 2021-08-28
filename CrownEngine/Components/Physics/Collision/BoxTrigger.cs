@@ -10,26 +10,34 @@ namespace CrownEngine
 {
     public class BoxTrigger : Component
     {
-        public bool trigger;
-
         public Rectangle hitbox => new Rectangle((int)myActor.position.X, (int)myActor.position.Y, myActor.width, myActor.height);
 
-        public string desired;
+        public List<Actor> triggers = new List<Actor>();
+        public List<string> triggerNames = new List<string>();
 
-        public BoxTrigger(string _desired, Actor myActor) : base(myActor)
+        public BoxTrigger(Actor myActor) : base(myActor)
         {
-            desired = _desired;
+
         }
 
         public override void Update()
         {
-            trigger = false;
-
-            for(int i = 0; i < myActor.myStage.actors.Count; i++)
+            for (int i = 0; i < triggers.Count; i++)
             {
-                if(myActor.myStage.actors[i].HasComponent<BoxCollider>() && myActor.rect.Intersects(myActor.myStage.actors[i].rect) && myActor.myStage.actors[i].GetType().Name == desired)
+                if (triggers[i] == null || !myActor.rect.Intersects(triggers[i].rect))
                 {
-                    trigger = true;
+                    triggers[i] = null;
+                    triggerNames[i] = null;
+                }
+            }
+
+            for (int i = 0; i < myActor.myStage.actors.Count; i++)
+            {
+                if (myActor.myStage.actors[i] != null && (myActor.myStage.actors[i].HasComponent<BoxCollider>() || myActor.myStage.actors[i].HasComponent<BoxTrigger>()) && myActor.rect.Intersects(myActor.myStage.actors[i].rect))
+                {
+                    triggers.Add(myActor.myStage.actors[i]);
+
+                    triggerNames.Add(myActor.myStage.actors[i].GetType().Name);
                 }
             }
 

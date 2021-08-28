@@ -23,7 +23,7 @@ namespace CrownEngine
         {
             for(int i = 0; i < myActor.myStage.actors.Count; i++)
             {
-                if(myActor.myStage.actors[i].HasComponent<BoxCollider>() && myActor.HasComponent<Rigidbody>())
+                if(myActor.myStage.actors[i] != null && myActor.myStage.actors[i].HasComponent<BoxCollider>() && myActor.HasComponent<Rigidbody>())
                 {
                     Rigidbody rb = myActor.GetComponent<Rigidbody>();
                     Actor other = myActor.myStage.actors[i];
@@ -40,7 +40,7 @@ namespace CrownEngine
 
             for (int i = 0; i < myActor.myStage.actors.Count; i++)
             {
-                if (myActor.myStage.actors[i].HasComponent<TileCollider>() && myActor.HasComponent<Rigidbody>())
+                if (myActor.myStage.actors[i] != null && myActor.myStage.actors[i].HasComponent<TileCollider>() && myActor.HasComponent<Rigidbody>())
                 {
                     for(int j = 0; j < myActor.myStage.actors[i].GetComponent<TileCollider>().rectangles.Count; j++)
                     {

@@ -11,11 +11,11 @@ namespace CrownEngine
 {
     public class TrailRenderer : Component
     {
-        public Color color1 = Color.Blue;
-        public Color color2 = Color.Cyan;
+        public Color color1 = Color.Red;
+        public Color color2 = Color.Yellow;
 
-        public Color edgeColor1 = Color.Blue * 0.5f;
-        public Color edgeColor2 = Color.LightCyan * 0.5f;
+        public Color edgeColor1 = Color.Red * 0.5f;
+        public Color edgeColor2 = Color.Yellow * 0.5f;
 
         public TrailRenderer(Actor myActor) : base(myActor)
         {
@@ -56,9 +56,6 @@ namespace CrownEngine
                 newMidpoints[i] = midpoints[i - 1];
             }
 
-            Vector2 vectorLeft = Vector2.Normalize(myActor.GetComponent<Rigidbody>().velocity).RotatedBy(MathHelper.PiOver2); //sticks out to the left
-            Vector2 vectorRight = Vector2.Normalize(myActor.GetComponent<Rigidbody>().velocity).RotatedBy(-MathHelper.PiOver2); //sticks out to the right
-
             float len = newMidpoints.Length - 1;
 
             spriteBatch.End();
@@ -68,6 +65,9 @@ namespace CrownEngine
 
             for (int i = 0; i < len; i++)
             {
+                Vector2 vectorLeft = Vector2.Normalize(newMidpoints[i + 1] - newMidpoints[i]).RotatedBy(MathHelper.PiOver2); //sticks out to the left
+                Vector2 vectorRight = Vector2.Normalize(newMidpoints[i + 1] - newMidpoints[i]).RotatedBy(-MathHelper.PiOver2); //sticks out to the right
+
                 Vector2 mp1 = EngineHelpers.ToPrimCoordinates(newMidpoints[i]);
                 Vector2 mp2 = EngineHelpers.ToPrimCoordinates(newMidpoints[i + 1]);
 
@@ -88,10 +88,13 @@ namespace CrownEngine
 
             int j = (int)len - 1;
 
+            Vector2 vectorLeft2 = Vector2.Normalize(newMidpoints[j] - newMidpoints[j - 1]).RotatedBy(MathHelper.PiOver2); //sticks out to the left
+            Vector2 vectorRight2 = Vector2.Normalize(newMidpoints[j] - newMidpoints[j - 1]).RotatedBy(-MathHelper.PiOver2); //sticks out to the right
+
             Vector2 cap = EngineHelpers.ToPrimCoordinates(newMidpoints[(int)len]);
             Vector2 midpoint = EngineHelpers.ToPrimCoordinates(newMidpoints[(int)len - 1]);
-            Vector2 lep = EngineHelpers.ToPrimCoordinates(newMidpoints[(int)len - 1] + (vectorLeft * ((trailWidth / (float)segments) * (len - j))));
-            Vector2 rep = EngineHelpers.ToPrimCoordinates(newMidpoints[(int)len - 1] + (vectorRight * ((trailWidth / (float)segments) * (len - j))));
+            Vector2 lep = EngineHelpers.ToPrimCoordinates(newMidpoints[(int)len - 1] + (vectorLeft2 * ((trailWidth / (float)segments) * (len - j))));
+            Vector2 rep = EngineHelpers.ToPrimCoordinates(newMidpoints[(int)len - 1] + (vectorRight2 * ((trailWidth / (float)segments) * (len - j))));
 
             EngineHelpers.DrawPrimitive(cap, lep, midpoint, edgeColor2, Color.Lerp(edgeColor1, edgeColor2, (float)j / (float)len), Color.Lerp(color1, color2, (float)j / (float)len));
             EngineHelpers.DrawPrimitive(cap, rep, midpoint, edgeColor2, Color.Lerp(edgeColor1, edgeColor2, (float)j / (float)len), Color.Lerp(color1, color2, (float)j / (float)len));

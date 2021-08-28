@@ -59,6 +59,16 @@ namespace CrownEngine
             }
         }
 
+        public virtual void PreDraw(SpriteBatch spriteBatch)
+        {
+
+        }
+
+        public virtual void PostDraw(SpriteBatch spriteBatch)
+        {
+
+        }
+
         public virtual void Kill()
         {
             myStage.RemoveActor(this);
