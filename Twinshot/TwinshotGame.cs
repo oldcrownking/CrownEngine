@@ -53,15 +53,18 @@ namespace Twinshot
             InitializeStages(new List<Stage>()
             {
                 new MainMenu(),
-                new GameStage()
+                new GameStage(),
+                new GameOver()
             });
 
             base.CustomInitialize();
         }
 
-        public override int windowHeight => 128;
+        public override int windowHeight => 144;
         public override int windowWidth => 64;
         public override int windowScale => 2;
+
+        public bool hasSeenTutorial = false;
 
         public override void CustomUpdate()
         {

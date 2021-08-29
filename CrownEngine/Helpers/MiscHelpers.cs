@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 
 namespace CrownEngine
 {
@@ -17,5 +18,9 @@ namespace CrownEngine
 
             if(EngineGame.instance.activeStage.loaded == false) EngineGame.instance.activeStage.Load();
         }
+
+        public static SoundEffect GetSound(string name) => EngineGame.instance.Audio[name + ".wav"];
+
+        public static void PlaySound(string name) => GetSound(name).Play();
     }
 }

@@ -25,6 +25,8 @@ namespace CrownEngine
         public float particleAlpha;
         public int particleLifetime;
 
+        public Vector2 emissionDirection;
+
         public ParticleEmitter(Actor myActor, EmissionTypeID _emissionType, float _emissionRate, params ParticleComponent[] _components) : base(myActor)
         {
             components = _components;
@@ -38,6 +40,7 @@ namespace CrownEngine
             if (particleColor == default) particleColor = Color.White;
             if (particleScale == default) particleScale = 1f;
             if (particleAlpha == default) particleAlpha = 1f;
+            if (emissionDirection == default) emissionDirection = Vector2.UnitY;
 
             base.Load();
         }
@@ -46,32 +49,14 @@ namespace CrownEngine
         {
             if (emissionRate <= 1 && EngineHelpers.NextBool(emissionRate))
             {
-                Particle p = new Particle(myActor.position,
-                    Vector2.UnitY.RotatedBy(EngineHelpers.NextFloat(6.28f)) * 2f,
-                    particleTex,
-                    particleColor,
-                    particleScale, 
-                    particleLifetime,
-                    particleAlpha,
-                    components);
-
-                particles.Add(p);
+                SpawnParticle();
             }
 
             if(emissionRate > 1)
             {
                 for(int i = 0; i < (int)emissionRate; i++)
                 {
-                    Particle p = new Particle(myActor.position,
-                        Vector2.UnitY.RotatedBy(EngineHelpers.NextFloat(6.28f)) * 2f,
-                        particleTex,
-                        particleColor,
-                        particleScale,
-                        particleLifetime,
-                        particleAlpha,
-                        components);
-
-                    particles.Add(p);
+                    SpawnParticle();
                 }
             }
 
@@ -83,6 +68,25 @@ namespace CrownEngine
             }
 
             base.Update();
+        }
+
+        public void SpawnParticle()
+        {
+            Vector2 vel = Vector2.Zero;
+
+            if (emissionType == EmissionTypeID.Radial) vel = Vector2.UnitY.RotatedBy(EngineHelpers.NextFloat(6.28f)) * 2f;
+            if (emissionType == EmissionTypeID.Conical) vel = emissionDirection.RotatedBy(EngineHelpers.NextFloat(-1.047f, 1.047f));
+
+            Particle p = new Particle(myActor.position,
+                vel,
+                particleTex,
+                particleColor,
+                particleScale,
+                particleLifetime,
+                particleAlpha,
+                components);
+
+            particles.Add(p);
         }
 
         public override void Draw(SpriteBatch spriteBatch)

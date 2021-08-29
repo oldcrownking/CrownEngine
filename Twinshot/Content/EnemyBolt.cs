@@ -26,10 +26,11 @@ namespace Twinshot.Content
 
             AddComponent(spriteRenderer);
             AddComponent(new Rigidbody(this));
+            AddComponent(new TrailRenderer(this, Color.White, Color.White, Color.White, Color.White, 5, 3));
             AddComponent(new BoxTrigger(this));
 
-            width = 6;
-            height = 6;
+            width = 4;
+            height = 4;
         }
 
         public override void Update()

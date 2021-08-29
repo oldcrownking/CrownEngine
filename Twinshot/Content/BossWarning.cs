@@ -10,9 +10,9 @@ using Twinshot;
 
 namespace Twinshot.Content
 {
-    public class SpaceKey : Actor
+    public class BossWarning : Actor
     {
-        public SpaceKey(Vector2 pos, Stage myStage) : base(pos, myStage)
+        public BossWarning(Vector2 pos, Stage myStage) : base(pos, myStage)
         {
 
         }
@@ -21,7 +21,7 @@ namespace Twinshot.Content
         {
             SpriteRenderer spriteRenderer = new SpriteRenderer(true, this);
 
-            spriteRenderer.tex = EngineHelpers.GetTexture("SpaceKey");
+            spriteRenderer.tex = EngineHelpers.GetTexture("BossWarningText");
 
             AddComponent(spriteRenderer);
             AddComponent(new Rigidbody(this));
@@ -29,10 +29,18 @@ namespace Twinshot.Content
 
             GetComponent<Rigidbody>().velocity = new Vector2(0, 2);
 
-            width = 24;
+            width = 20;
             height = 9;
 
             health = 3;
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(EngineHelpers.GetTexture("BossWarningSign"), position + new Vector2(-14, -1), new Rectangle(frame * 12, 0, 12, 11), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(EngineHelpers.GetTexture("BossWarningSign"), position + new Vector2(22, -1), new Rectangle((1 - frame) * 12, 0, 12, 11), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+
+            base.Draw(spriteBatch);
         }
 
         public int ticks;
@@ -42,6 +50,11 @@ namespace Twinshot.Content
         public override void Update()
         {
             base.Update();
+
+            ticks++;
+
+            if (ticks % 15 == 0) frame++;
+            if (frame >= 2) frame = 0;
 
             for (int i = 0; i < GetComponent<BoxTrigger>().triggers.Count; i++)
             {
@@ -60,11 +73,7 @@ namespace Twinshot.Content
                     {
                         myStage.AddActor(new SmokeBurst(Center, myStage));
 
-                        myStage.AddActor(new Nut(Center + new Vector2(-3, -3), myStage));
-
                         EngineHelpers.PlaySound("EnemyKilled" + EngineHelpers.Next(3));
-
-                        (myStage as GameStage).wave++;
 
                         Kill();
                     }

@@ -49,8 +49,6 @@ namespace CrownEngine
 
         public static Texture2D GetTexture(string name) => EngineGame.instance.Textures[name + ".png"];
 
-        public static SoundEffect GetSound(string name) =>EngineGame.instance.Audio[name + ".wav"];
-
         public static void DrawOutline(SpriteBatch spriteBatch, float alpha, Color color, Texture2D tex, Vector2 pos, float rotation, float scale)
         {
             spriteBatch.End();

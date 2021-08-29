@@ -30,10 +30,16 @@ namespace Twinshot.Content
 
             width = 8;
             height = 12;
+
+            base.Load();
         }
 
         public int shotCooldown;
         public int kills;
+        public int nuts = 0;
+        public int health = 3;
+
+        public int deathCooldown = -1;
         public override void Update()
         {
             if(EngineGame.instance.keyboardState.IsKeyDown(Keys.A))
@@ -45,7 +51,7 @@ namespace Twinshot.Content
             if (!EngineGame.instance.keyboardState.IsKeyDown(Keys.A) && !EngineGame.instance.keyboardState.IsKeyDown(Keys.D))
                 GetComponent<Rigidbody>().velocity.X *= 0.93f;
 
-            if (EngineGame.instance.keyboardState.IsKeyDown(Keys.Space) && !EngineGame.instance.oldKeyboardState.IsKeyDown(Keys.Space) && shotCooldown <= 0)
+            if (EngineGame.instance.keyboardState.IsKeyDown(Keys.Space) && !EngineGame.instance.oldKeyboardState.IsKeyDown(Keys.Space) && shotCooldown <= 0 && deathCooldown < 0)
             {
                 //myStage.AddActor(new PlayerBolt(new Vector2(Center.X - 3, position.Y - 5), myStage));
                 //myStage.AddActor(new PlayerBolt(new Vector2(Center.X + 1, position.Y - 5), myStage));
@@ -54,8 +60,21 @@ namespace Twinshot.Content
 
                 shotCooldown = 10;
 
-                EngineHelpers.GetSound("LaserShoot").Play();
+                EngineHelpers.PlaySound("LaserShoot");
             }
+
+            if (deathCooldown >= 0) deathCooldown--;
+
+            if (deathCooldown == 60 && health < 0) EngineHelpers.SwitchStages(2);
+
+            //if (deathCooldown == 1) (myStage as GameStage).SpawnWave((int)(myStage as GameStage).wave);
+
+            if (deathCooldown > 60)
+                GetComponent<SpriteRenderer>().visible = false;
+            else if (deathCooldown >= 0 && deathCooldown % 10 == 0)
+                GetComponent<SpriteRenderer>().visible = !GetComponent<SpriteRenderer>().visible;
+            if (deathCooldown < 0) 
+                GetComponent<SpriteRenderer>().visible = true;
 
             shotCooldown--;
 
@@ -66,14 +85,43 @@ namespace Twinshot.Content
 
             for (int i = 0; i < GetComponent<BoxTrigger>().triggers.Count; i++)
             {
-                if (GetComponent<BoxTrigger>().triggers[i] != null && GetComponent<BoxTrigger>().triggerNames[i] == "Nut")
+                if (GetComponent<BoxTrigger>().triggers[i] != null && deathCooldown < 0)
                 {
-                    EngineHelpers.GetSound("GetNut").Play();
+                    if (GetComponent<BoxTrigger>().triggerNames[i] == "Nut")
+                    {
+                        EngineHelpers.PlaySound("GetNut");
 
-                    GetComponent<BoxTrigger>().triggers[i].Kill();
-                    GetComponent<BoxTrigger>().triggerNames[i] = "";
+                        nuts++;
+
+                        GetComponent<BoxTrigger>().triggers[i].Kill();
+                        GetComponent<BoxTrigger>().triggerNames[i] = "";
+                    }
+
+                    if (GetComponent<BoxTrigger>().triggerNames[i].Contains("Enemy") || GetComponent<BoxTrigger>().triggerNames[i].Contains("Boss"))
+                    {
+                        GetComponent<BoxTrigger>().triggers[i].Kill();
+                        GetComponent<BoxTrigger>().triggerNames[i] = "";
+
+                        Explode();
+                    }
                 }
             }
+        }
+
+        public void Explode()
+        {
+            EngineHelpers.PlaySound("PlayerKilled");
+
+            GetComponent<SpriteRenderer>().visible = false;
+            health--;
+
+            myStage.AddActor(new SmokeBurst(Center, myStage));
+
+            deathCooldown = 120;
+
+            (myStage as GameStage).wave--;
+
+            (myStage as GameStage).ClearEnemies();
         }
 
         public override void Draw(SpriteBatch spriteBatch)

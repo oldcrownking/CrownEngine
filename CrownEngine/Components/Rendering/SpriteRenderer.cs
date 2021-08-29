@@ -25,6 +25,8 @@ namespace CrownEngine
 
         public Vector2 origin = Vector2.Zero;
 
+        public bool visible = true;
+
         public SpriteRenderer(bool _drawWithWorld, Actor myActor) : base(myActor)
         {
             drawWithWorld = _drawWithWorld;
@@ -42,7 +44,7 @@ namespace CrownEngine
             Vector2 pos = myActor.position;
             if (drawWithWorld) pos -= myActor.myStage.screenPosition;
 
-            spriteBatch.Draw(tex, pos, new Rectangle(frame.X * myActor.width, frame.Y * myActor.height, myActor.width, myActor.height), color, rotation, origin, scale, SpriteEffects.None, 0f);
+            if(visible) spriteBatch.Draw(tex, pos, new Rectangle(frame.X * myActor.width, frame.Y * myActor.height, myActor.width, myActor.height), color, rotation, origin, scale, SpriteEffects.None, 0f);
 
             base.Draw(spriteBatch);
         }
