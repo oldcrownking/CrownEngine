@@ -68,15 +68,6 @@ namespace Twinshot
 
         public override void CustomUpdate()
         {
-            /*if (keyboardState.IsKeyDown(Keys.OemPlus) && windowScale < 6)
-            {
-                windowScale++;
-            }
-            if (keyboardState.IsKeyDown(Keys.OemMinus) && windowScale > 1)
-            {
-                windowScale--;
-            }*/
-
             base.CustomUpdate();
         }
 
