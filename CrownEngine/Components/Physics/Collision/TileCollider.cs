@@ -27,6 +27,8 @@ namespace CrownEngine
             tileSize = size;
 
             tileGrid = grid;
+
+            oldTileGrid = tileGrid;
         }
 
         public override void Load()
@@ -48,21 +50,23 @@ namespace CrownEngine
         public int[,] oldTileGrid;
         public override void Update()
         {
-            if(oldTileGrid != tileGrid)
-            {
+            //if(tileGrid != oldTileGrid) //oddly not detected
+            //{
+                rectangles.Clear();
                 for (int i = 0; i < tileGrid.GetLength(1); i++)
                 {
                     for (int j = 0; j < tileGrid.GetLength(0); j++)
                     {
-                        if (tileGrid[j, i] >= 1 && EnclosedTile(i, j))
+                        if (tileGrid[j, i] >= 1)
                         {
                             rectangles.Add(new Rectangle((i * tileSize) + (int)myActor.position.X, (j * tileSize) + (int)myActor.position.Y, tileSize, tileSize));
                         }
                     }
                 }
-            }
 
-            oldTileGrid = tileGrid;
+                oldTileGrid = tileGrid;
+            //}
+
             base.Update();
         }
 

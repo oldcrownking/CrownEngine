@@ -30,11 +30,11 @@ namespace CrownEngine
 
                     if ((rb.velocity.X > 0 && EngineHelpers.IsTouchingLeft(hitbox, other.GetComponent<BoxCollider>().hitbox, rb.velocity)) ||
                         (rb.velocity.X < 0 && EngineHelpers.IsTouchingRight(hitbox, other.GetComponent<BoxCollider>().hitbox, rb.velocity)))
-                        rb.velocity.X = 0;
+                        myActor.GetComponent<Rigidbody>().velocity.X = 0;
 
                     if ((rb.velocity.Y > 0 && EngineHelpers.IsTouchingTop(hitbox, other.GetComponent<BoxCollider>().hitbox, rb.velocity)) ||
                         (rb.velocity.Y < 0 && EngineHelpers.IsTouchingBottom(hitbox, other.GetComponent<BoxCollider>().hitbox, rb.velocity)))
-                        rb.velocity.Y = 0;
+                        myActor.GetComponent<Rigidbody>().velocity.Y = 0;
                 }
             }
 

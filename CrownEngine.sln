@@ -7,10 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrownEngine", "CrownEngine\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CenturionGame", "CenturionGame\CenturionGame.csproj", "{23CB8210-F23B-4FF2-9D39-DE131F3256EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Twinshot", "Twinshot\Twinshot.csproj", "{315D1C92-2C60-43A9-9469-79DB9239B42B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Twinshot", "Twinshot\Twinshot.csproj", "{315D1C92-2C60-43A9-9469-79DB9239B42B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{CFE80315-108A-46B9-8086-0353312D4F78} = {CFE80315-108A-46B9-8086-0353312D4F78}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Roll", "Roll\Roll.csproj", "{D50B20F0-6390-423B-8B80-DC7BAA3DD511}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -72,6 +74,22 @@ Global
 		{315D1C92-2C60-43A9-9469-79DB9239B42B}.Release|x64.Build.0 = Release|Any CPU
 		{315D1C92-2C60-43A9-9469-79DB9239B42B}.Release|x86.ActiveCfg = Release|Any CPU
 		{315D1C92-2C60-43A9-9469-79DB9239B42B}.Release|x86.Build.0 = Release|Any CPU
+		{D50B20F0-6390-423B-8B80-DC7BAA3DD511}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D50B20F0-6390-423B-8B80-DC7BAA3DD511}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D50B20F0-6390-423B-8B80-DC7BAA3DD511}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{D50B20F0-6390-423B-8B80-DC7BAA3DD511}.Debug|ARM.Build.0 = Debug|Any CPU
+		{D50B20F0-6390-423B-8B80-DC7BAA3DD511}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D50B20F0-6390-423B-8B80-DC7BAA3DD511}.Debug|x64.Build.0 = Debug|Any CPU
+		{D50B20F0-6390-423B-8B80-DC7BAA3DD511}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D50B20F0-6390-423B-8B80-DC7BAA3DD511}.Debug|x86.Build.0 = Debug|Any CPU
+		{D50B20F0-6390-423B-8B80-DC7BAA3DD511}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D50B20F0-6390-423B-8B80-DC7BAA3DD511}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D50B20F0-6390-423B-8B80-DC7BAA3DD511}.Release|ARM.ActiveCfg = Release|Any CPU
+		{D50B20F0-6390-423B-8B80-DC7BAA3DD511}.Release|ARM.Build.0 = Release|Any CPU
+		{D50B20F0-6390-423B-8B80-DC7BAA3DD511}.Release|x64.ActiveCfg = Release|Any CPU
+		{D50B20F0-6390-423B-8B80-DC7BAA3DD511}.Release|x64.Build.0 = Release|Any CPU
+		{D50B20F0-6390-423B-8B80-DC7BAA3DD511}.Release|x86.ActiveCfg = Release|Any CPU
+		{D50B20F0-6390-423B-8B80-DC7BAA3DD511}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
