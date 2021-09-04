@@ -8,15 +8,15 @@ using CrownEngine;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
 
-namespace CrownEngine.Prefabs
+namespace Roll.Content
 {
-    public class SolidTilemap : Actor
+    public class SemisolidPlatform : Actor
     {
         public int[,] grid;
         public List<Texture2D> textures;
         public int tileSize;
 
-        public SolidTilemap(Vector2 pos, Stage myStage, int[,] tileGrid, List<Texture2D> _textures, int _tileSize) : base(pos, myStage)
+        public SemisolidPlatform(Vector2 pos, Stage myStage, int[,] tileGrid, List<Texture2D> _textures, int _tileSize) : base(pos, myStage)
         {
             grid = tileGrid;
 
@@ -25,8 +25,6 @@ namespace CrownEngine.Prefabs
             textures = _textures;
         }
 
-        public bool editMode = false;
-        public int editId;
         public override void Update()
         {
             base.Update();
@@ -52,7 +50,7 @@ namespace CrownEngine.Prefabs
             }
 
             AddComponent(new TileRenderer(tileSize, dict, grid, Color.White, this));
-            AddComponent(new TileCollider(tileSize, grid, this));
+            AddComponent(new SemisolidTileCollider(tileSize, grid, this));
 
             base.Load();
         }

@@ -35,14 +35,6 @@ namespace CrownEngine
             return vec;
         }
 
-        public static float Clamp(this float num, float min, float max)  
-        {
-            if (num < min) num = min;
-            if (num > max) num = max;
-
-            return num;
-        }
-
         public static Vector2 ClampVectorMagnitude(this Vector2 vec, float max)
         {
             if (vec.Length() < max) return vec;

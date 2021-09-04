@@ -166,7 +166,7 @@ namespace CrownEngine
                 components[i].Draw(spriteBatch);
             }
 
-            spriteBatch.Draw(tex, position, null, color * alpha, rotation, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(tex, position - EngineGame.instance.activeStage.screenPosition, null, color * alpha, rotation, Vector2.Zero, scale, SpriteEffects.None, 0f);
         }
     }
 

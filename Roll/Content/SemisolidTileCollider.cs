@@ -7,9 +7,9 @@ using Microsoft.Xna.Framework.Input;
 using CrownEngine;
 using System.Diagnostics;
 
-namespace CrownEngine
+namespace Roll
 {
-    public class TileCollider : Component
+    public class SemisolidTileCollider : Component
     {
         public int[,] tileGrid;
 
@@ -23,7 +23,7 @@ namespace CrownEngine
 
         //public List<Line> borders = new List<Line>();
 
-        public TileCollider(int size, int[,] grid, Actor myActor) : base(myActor)
+        public SemisolidTileCollider(int size, int[,] grid, Actor myActor) : base(myActor)
         {
             tileSize = size;
 
@@ -40,7 +40,7 @@ namespace CrownEngine
                 {
                     if (tileGrid[j, i] >= 1)
                     {
-                        rectangles.Add(new Rectangle((i * tileSize) + (int)myActor.position.X, (j * tileSize) + (int)myActor.position.Y, tileSize, tileSize));
+                        rectangles.Add(new Rectangle((i * tileSize) + (int)myActor.position.X, (j * tileSize) + (int)myActor.position.Y, tileSize, 0));
                     }
                 }
             }
@@ -60,7 +60,7 @@ namespace CrownEngine
                 {
                     if (tileGrid[j, i] >= 1)
                     {
-                        rectangles.Add(new Rectangle((i * tileSize) + (int)myActor.position.X, (j * tileSize) + (int)myActor.position.Y, tileSize, tileSize));
+                        rectangles.Add(new Rectangle((i * tileSize) + (int)myActor.position.X, (j * tileSize) + (int)myActor.position.Y, tileSize, 0));
                     }
                 }
             }

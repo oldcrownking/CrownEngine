@@ -8,15 +8,15 @@ using CrownEngine;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
 
-namespace CrownEngine.Prefabs
+namespace Roll.Content
 {
-    public class SolidTilemap : Actor
+    public class SpikeTilemap : Actor
     {
         public int[,] grid;
         public List<Texture2D> textures;
         public int tileSize;
 
-        public SolidTilemap(Vector2 pos, Stage myStage, int[,] tileGrid, List<Texture2D> _textures, int _tileSize) : base(pos, myStage)
+        public SpikeTilemap(Vector2 pos, Stage myStage, int[,] tileGrid, List<Texture2D> _textures, int _tileSize) : base(pos, myStage)
         {
             grid = tileGrid;
 
