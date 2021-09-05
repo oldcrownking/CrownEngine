@@ -75,7 +75,7 @@ namespace Twinshot.Content
             }
 
             if (position.X < 0 || position.X > 56) GetComponent<Rigidbody>().velocity.X = 0;
-            position.X = position.X.Clamp(0, 56);
+            position.X = MathHelper.Clamp(position.X, 0, 56);
         }
 
         public override void Draw(SpriteBatch spriteBatch)

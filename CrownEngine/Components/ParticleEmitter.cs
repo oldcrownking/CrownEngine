@@ -25,6 +25,11 @@ namespace CrownEngine
         public float particleAlpha;
         public int particleLifetime;
 
+        public float coneAngleMin;
+        public float coneAngleMax;
+
+        public float emissionSpeed;
+
         public Vector2 emissionDirection;
 
         public ParticleEmitter(Actor myActor, EmissionTypeID _emissionType, float _emissionRate, params ParticleComponent[] _components) : base(myActor)
@@ -75,7 +80,10 @@ namespace CrownEngine
             Vector2 vel = Vector2.Zero;
 
             if (emissionType == EmissionTypeID.Radial) vel = Vector2.UnitY.RotatedBy(EngineHelpers.NextFloat(6.28f)) * 2f;
-            if (emissionType == EmissionTypeID.Conical) vel = emissionDirection.RotatedBy(EngineHelpers.NextFloat(-1.047f, 1.047f));
+            if (emissionType == EmissionTypeID.Conical) vel = emissionDirection.RotatedBy(EngineHelpers.NextFloat(coneAngleMin, coneAngleMax));
+            if (emissionType == EmissionTypeID.Biconical) vel = (EngineHelpers.NextBool(2)
+                    ? emissionDirection.RotatedBy(EngineHelpers.NextFloat(coneAngleMin, coneAngleMax))
+                    : emissionDirection.RotatedBy(EngineHelpers.NextFloat(coneAngleMax + 3.14f, coneAngleMin + 3.14f)));
 
             Particle p = new Particle(myActor.position,
                 vel,

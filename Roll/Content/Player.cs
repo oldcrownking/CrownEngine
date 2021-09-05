@@ -22,7 +22,7 @@ namespace Roll.Content
         {
             AddComponent(new BoxCollider(this));
             AddComponent(new Rigidbody(this));
-            AddComponent(new TrailRenderer(this, Color.White, Color.White, Color.White, Color.White, 20, 4));
+            AddComponent(new TrailRenderer(this, Color.White, Color.White, Color.White, Color.White, 10, 4));
 
             GetComponent<Rigidbody>().gravityDir = Vector2.UnitY;
             GetComponent<Rigidbody>().gravityForce = 0.2f;
@@ -35,11 +35,11 @@ namespace Roll.Content
         public int jumpTimer;
         public int dashTimer;
         public Vector2 spawnPoint = Vector2.One * 32;
+        public bool onGround;
 
         public override void Update()
         {
             if (EngineGame.instance.mouseState.RightButton == ButtonState.Pressed) Debug.WriteLine(EngineGame.instance.mousePos + myStage.screenPosition);
-
 
             if (deathTicks >= 1)
             {
@@ -51,7 +51,7 @@ namespace Roll.Content
             {
                 if (Math.Abs(GetComponent<Rigidbody>().velocity.X) < 3)
                 {
-                    MathHelper.Clamp(GetComponent<Rigidbody>().velocity.X, -1.5f, 1.5f);
+                    GetComponent<Rigidbody>().velocity.X = MathHelper.Clamp(GetComponent<Rigidbody>().velocity.X, -1.25f, 1.25f);
                     if (GetComponent<TrailRenderer>().segments > 2) GetComponent<TrailRenderer>().segments--;
                 }
                 else
@@ -79,13 +79,17 @@ namespace Roll.Content
                         if (EngineGame.instance.keyboardState.IsKeyDown(Keys.A))
                         {
                             GetComponent<Rigidbody>().velocity += new Vector2(-6, -2);
-                            GetComponent<TrailRenderer>().segments = 20;
+                            GetComponent<TrailRenderer>().segments = 10;
+
+                            EngineHelpers.PlaySound("Dash");
                         }
 
                         if (EngineGame.instance.keyboardState.IsKeyDown(Keys.D))
                         {
                             GetComponent<Rigidbody>().velocity += new Vector2(6, -2);
-                            GetComponent<TrailRenderer>().segments = 20;
+                            GetComponent<TrailRenderer>().segments = 10;
+
+                            EngineHelpers.PlaySound("Dash");
                         }
                     }
 
@@ -101,15 +105,18 @@ namespace Roll.Content
 
                     UpdateCollision();
 
-                    if (EngineGame.instance.keyboardState.IsKeyDown(Keys.Space) && GetComponent<Rigidbody>().velocity.Y == 0 && jumpTimer == 0) //scale.X = 0.25, should be 8
+                    if (EngineGame.instance.keyboardState.IsKeyDown(Keys.Space) && GetComponent<Rigidbody>().velocity.Y == 0 && jumpTimer == 0)
                     {
                         GetComponent<Rigidbody>().velocity.Y -= 2f;
+
+                        onGround = false;
+                        EngineHelpers.PlaySound("Jump");
                     }
 
 
                     if (GetComponent<Rigidbody>().velocity.Y <= -0.01f)
                     {
-                        if (jumpTimer < 10 && EngineGame.instance.keyboardState.IsKeyDown(Keys.Space))
+                        if (jumpTimer < 10 && EngineGame.instance.keyboardState.IsKeyDown(Keys.Space) && Math.Abs(GetComponent<Rigidbody>().velocity.X) < 3)
                         {
                             GetComponent<Rigidbody>().gravityForce -= (GetComponent<Rigidbody>().gravityForce / 10f);
                         }
@@ -117,8 +124,16 @@ namespace Roll.Content
                         jumpTimer++;
                     }
 
-                    if (GetComponent<Rigidbody>().velocity.Y <= 0.01f && GetComponent<Rigidbody>().oldVelocity.Y > 0)
+                    if (Math.Abs(GetComponent<Rigidbody>().velocity.Y) == 0 && Math.Abs(GetComponent<Rigidbody>().oldVelocity.Y) > 0)
                     {
+                        if (!onGround)
+                        {
+                            EngineHelpers.PlaySound("Thud");
+                            myStage.AddActor(new DustCloud(new Vector2(Center.X, Center.Y + height / 2), myStage));
+
+                            onGround = true;
+                        }
+
                         jumpTimer = 0;
                         GetComponent<Rigidbody>().gravityForce = 0.2f;
                     }
@@ -185,6 +200,8 @@ namespace Roll.Content
             }
 
             GetComponent<BoxCollider>().Update();
+
+            //if (Math.Abs(GetComponent<Rigidbody>().velocity.X) * 4f < Math.Abs(GetComponent<Rigidbody>().oldVelocity.X)) EngineHelpers.PlaySound("Thud");
         }
 
         public void Respawn()
@@ -195,6 +212,8 @@ namespace Roll.Content
             visible = true;
 
             GetComponent<Rigidbody>().velocity = Vector2.Zero;
+            GetComponent<TrailRenderer>().midpoints = new Vector2[GetComponent<TrailRenderer>().segments];
+
             rotation = 0;
         }
 
@@ -204,6 +223,8 @@ namespace Roll.Content
         {
             myStage.AddActor(new SmokeBurst(Center, myStage));
 
+            EngineHelpers.PlaySound("PlayerDeath");
+
             deathTicks++;
             visible = false;
         }
@@ -212,11 +233,14 @@ namespace Roll.Content
         public Point frame;
         public override void Draw(SpriteBatch spriteBatch)
         {
+            if (dashTimer == 90) EngineHelpers.PlaySound("DashCharged");
+
             if (dashTimer >= 90 && dashTimer < 95) frame = new Point(0, 1);
             else frame = new Point(0, 0);
 
-            if (Math.Abs(GetComponent<Rigidbody>().velocity.X) > 3) GetComponent<TrailRenderer>().Draw(spriteBatch);
-            else GetComponent<TrailRenderer>().midpoints = new Vector2[GetComponent<TrailRenderer>().segments];
+            if (Math.Abs(GetComponent<Rigidbody>().velocity.X) <= 3 && GetComponent<TrailRenderer>().segments > 2) GetComponent<TrailRenderer>().segments--;
+
+            GetComponent<TrailRenderer>().Draw(spriteBatch);
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);

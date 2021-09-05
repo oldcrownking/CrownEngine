@@ -19,7 +19,7 @@ namespace Roll.Content
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            (EngineGame.instance as RollGame).DrawString(spriteBatch, "Hello World 90 AZ az", new Vector2(4, 4), 4);
+            (EngineGame.instance as RollGame).DrawString(spriteBatch, "Hello World 90 AZ az", new Vector2(4, 4), 4, 0, 0f, 0f);
 
             base.Draw(spriteBatch);
         }

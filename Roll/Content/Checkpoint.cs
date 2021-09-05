@@ -107,6 +107,7 @@ namespace Roll.Content
                 (myStage as World1_1).player.spawnPoint = Center;
                 reached = true;
                 myStage.AddActor(new StarBurst(Center, myStage));
+                EngineHelpers.PlaySound("GetCheckpoint");
             }
 
             spriteBatch.End();

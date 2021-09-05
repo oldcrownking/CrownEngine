@@ -58,10 +58,12 @@ namespace CrownEngine
 
             newMidpoints[0] = origin;
 
-            if (segments > 0)
+            if (segments > 1)
             {
-                for (int i = 1; i < midpoints.Length; i++)
+                for (int i = 1; i < newMidpoints.Length; i++)
                 {
+                    if (i > midpoints.Length) break;
+
                     newMidpoints[i] = midpoints[i - 1];
                 }
 

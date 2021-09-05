@@ -16,7 +16,7 @@ namespace CrownEngine
 
             EngineGame.instance.activeStage = EngineGame.instance.stages[newStage];
 
-            if(EngineGame.instance.activeStage.loaded == false) EngineGame.instance.activeStage.Load();
+            if (EngineGame.instance.activeStage.loaded == false) EngineGame.instance.activeStage.Load();
         }
 
         public static SoundEffect GetSound(string name) => EngineGame.instance.Audio[name + ".wav"];

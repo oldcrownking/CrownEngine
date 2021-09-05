@@ -20,7 +20,7 @@ namespace Roll
     {
         public RollGame() : base()
         {
-            IsMouseVisible = true;
+            IsMouseVisible = false;
         }
 
         public override void CustomInitialize()
@@ -64,6 +64,8 @@ namespace Roll
 
         public override void CustomUpdate()
         {
+            ticks++;
+
             base.CustomUpdate();
         }
 
@@ -74,34 +76,38 @@ namespace Roll
 
         public override void CustomPostDraw(SpriteBatch spriteBatch)
         {
-            //spriteBatch.Draw(EngineHelpers.GetTexture("Cursor"), mousePos * windowScale, new Rectangle(0, 0, 7, 10), Color.White, 0f, Vector2.Zero, windowScale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(EngineHelpers.GetTexture("Cursor"), mousePos * windowScale, new Rectangle(0, 0, 7, 10), Color.White, 0f, Vector2.Zero, windowScale, SpriteEffects.None, 0f);
 
             base.CustomPostDraw(spriteBatch);
         }
 
-        public void DrawString(SpriteBatch spriteBatch, string str, Vector2 pos, int spacing)
+        public int ticks;
+        public void DrawString(SpriteBatch spriteBatch, string str, Vector2 pos, int spacing, int dramaFactor, float dramaRate, float dramaCharDiff)
         {
             for (int i = 0; i < str.Length; i++)
             {
-                int charId = str[i] - 48;
+                int charId = str[i];
 
-                if (charId < 0)
+                if (charId < 32)
                 {
                     Debug.WriteLine("Invalid character detected");
                     continue;
                 }
 
-                if (charId == -16)
-                    spriteBatch.Draw(EngineHelpers.GetTexture("CharacterSheet"), pos + new Vector2(i * spacing, 0), new Rectangle((str[i] - 48) * 3, 0, 3, 5), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                if (charId == 32)
+                    continue;
 
-                if (charId < 65 - 48)
-                    spriteBatch.Draw(EngineHelpers.GetTexture("CharacterSheet"), pos + new Vector2(i * spacing, 0), new Rectangle((str[i] - 48) * 3, 0, 3, 5), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                if (charId < 48 && charId >= 33)
+                    spriteBatch.Draw(EngineHelpers.GetTexture("CharacterSheet"), pos + new Vector2(i * spacing, (float)Math.Sin((ticks + i * dramaCharDiff) / dramaRate) * dramaFactor), new Rectangle((str[i] - 33) * 3, 0, 3, 5), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 
-                else if (charId < 91 - 48 && charId >= 65 - 48)
-                    spriteBatch.Draw(EngineHelpers.GetTexture("CharacterSheet"), pos + new Vector2(i * spacing, 0), new Rectangle((str[i] - 65) * 3, 5, 3, 5), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                else if (charId < 65 && charId >= 48)
+                    spriteBatch.Draw(EngineHelpers.GetTexture("CharacterSheet"), pos + new Vector2(i * spacing, (float)Math.Sin((ticks + i * dramaCharDiff) / dramaRate) * dramaFactor), new Rectangle((str[i] - 48) * 3, 5, 3, 5), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 
-                else if (charId < 123 - 48 && charId >= 97 - 48)
-                    spriteBatch.Draw(EngineHelpers.GetTexture("CharacterSheet"), pos + new Vector2(i * spacing, 0), new Rectangle((str[i] - 97) * 3, 10, 3, 5), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                else if (charId < 91 && charId >= 65)
+                    spriteBatch.Draw(EngineHelpers.GetTexture("CharacterSheet"), pos + new Vector2(i * spacing, (float)Math.Sin((ticks + i * dramaCharDiff) / dramaRate) * dramaFactor), new Rectangle((str[i] - 65) * 3, 10, 3, 5), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+
+                else if (charId < 123 && charId >= 97)
+                    spriteBatch.Draw(EngineHelpers.GetTexture("CharacterSheet"), pos + new Vector2(i * spacing, (float)Math.Sin((ticks + i * dramaCharDiff) / dramaRate) * dramaFactor), new Rectangle((str[i] - 97) * 3, 15, 3, 5), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 
                 else
                     Debug.WriteLine("Invalid character detected");
