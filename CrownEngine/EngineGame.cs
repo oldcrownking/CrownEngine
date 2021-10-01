@@ -46,8 +46,6 @@ namespace CrownEngine
         public Vector2 mousePos;
         public Vector2 oldMousePos;
 
-        public PrimitiveType primitiveBatch;
-
         public Effect outlineEffect;
 
         public EngineGame()

@@ -37,6 +37,8 @@ namespace Roll.Content
         public Vector2 spawnPoint = Vector2.One * 32;
         public bool onGround;
 
+        public bool canUpgrade;
+
         public override void Update()
         {
             if (EngineGame.instance.mouseState.RightButton == ButtonState.Pressed) Debug.WriteLine(EngineGame.instance.mousePos + myStage.screenPosition);

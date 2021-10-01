@@ -17,6 +17,8 @@ namespace CrownEngine
         public Color edgeColor1;
         public Color edgeColor2;
 
+        public Vector2 offset = Vector2.Zero;
+
         public TrailRenderer(Actor myActor, Color _color1, Color _color2, Color _edgeColor1, Color _edgeColor2, int _segments, int width) : base(myActor)
         {
             color1 = _color1;
@@ -52,7 +54,7 @@ namespace CrownEngine
         {
             base.Draw(spriteBatch);
 
-            Vector2 origin = myActor.Center;
+            Vector2 origin = myActor.Center + offset;
 
             Vector2[] newMidpoints = new Vector2[segments];
 

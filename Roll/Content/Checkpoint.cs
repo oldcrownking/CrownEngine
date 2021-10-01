@@ -104,7 +104,7 @@ namespace Roll.Content
 
             if (GetComponent<BoxTrigger>().triggerNames.Contains("Player") && !reached)
             {
-                (myStage as World1_1).player.spawnPoint = Center;
+                (myStage as Level).player.spawnPoint = Center;
                 reached = true;
                 myStage.AddActor(new StarBurst(Center, myStage));
                 EngineHelpers.PlaySound("GetCheckpoint");

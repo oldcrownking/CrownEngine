@@ -10,6 +10,9 @@ namespace CrownEngine
 {
     public class BoxTrigger : Component
     {
+        public int width;
+        public int height;
+
         public Rectangle hitbox => new Rectangle((int)myActor.position.X, (int)myActor.position.Y, myActor.width, myActor.height);
 
         public List<Actor> triggers = new List<Actor>();
