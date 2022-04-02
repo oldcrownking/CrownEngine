@@ -81,7 +81,7 @@ namespace Twinshot.Content
             base.Update();
 
             if (position.X < 0 || position.X > 56) GetComponent<Rigidbody>().velocity.X = 0;
-            position.X = position.X.Clamp(0, 56);
+            //position.X = position.X.Clamp(0, 56);
 
             for (int i = 0; i < GetComponent<BoxTrigger>().triggers.Count; i++)
             {

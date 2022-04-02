@@ -6,9 +6,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using CrownEngine;
 using System.Diagnostics;
-using Deprecated;
+using LudumDareFifty;
 
-namespace Deprecated.Content
+namespace LudumDareFifty.Content
 {
     public class Sawblade : Actor
     {
@@ -21,7 +21,6 @@ namespace Deprecated.Content
         {
             AddComponent(new Rigidbody(this));
             AddComponent(new BoxTrigger(this));
-            AddComponent(new TrailRenderer(this, Color.White, Color.White, Color.White, Color.White, 10, 12));
 
             //GetComponent<Rigidbody>().velocity = new Vector2(EngineHelpers.NextFloat(-0.5f, 0.5f), 0);
             //GetComponent<Rigidbody>().gravityForce = 0.05f;
@@ -37,14 +36,14 @@ namespace Deprecated.Content
         {
             rotation += 0.075f;
 
-            if((myStage as GameStage).isScrolling && (myStage as GameStage).selfDestruct) position.Y -= 0.5f;
+            position.Y -= 1f;
 
             base.Update();
         }
 
         public override void PostDraw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(EngineHelpers.GetTexture("Sawblade"), position - myStage.screenPosition, null, Color.White, rotation, new Vector2(16, 16), 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(EngineHelpers.GetTexture("Sawblade"), position + new Vector2(-16, -16) - myStage.screenPosition, null, Color.White, rotation, new Vector2(16, 16), 1f, SpriteEffects.None, 0f);
 
             base.Draw(spriteBatch);
         }

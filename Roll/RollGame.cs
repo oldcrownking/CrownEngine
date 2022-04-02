@@ -36,8 +36,6 @@ namespace Roll
             {
                 string fixedPath = file.Substring(Content.RootDirectory.Length).TrimStart(Path.DirectorySeparatorChar);
 
-                //Debug.WriteLine("Found a wav!");
-
                 instance.Audio[Path.GetFileName(fixedPath)] = SoundEffect.FromStream(File.OpenRead(file));
             }
 
@@ -45,14 +43,12 @@ namespace Roll
             {
                 string fixedPath = file.Substring(Content.RootDirectory.Length).TrimStart(Path.DirectorySeparatorChar);
 
-                //Debug.WriteLine("Found a wav!");
-
                 instance.Effects[Path.GetFileName(fixedPath)] = Content.Load<Effect>(Path.GetFileName(fixedPath));
             }
 
             InitializeStages(new List<Stage>()
             {
-                new World1_1()
+                new World1_2()
             });
 
             base.CustomInitialize();
