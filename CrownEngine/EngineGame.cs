@@ -25,15 +25,16 @@ namespace CrownEngine
         public virtual int windowWidth => 256;
         public virtual int windowHeight => 144;
         public virtual int windowScale => 2;
+        
+        //public virtual string 
+
+        public virtual List<Stage> stages => new List<Stage>();
 
         public Stage activeStage;
-        public List<Stage> stages = new List<Stage>();
 
         public Dictionary<string, Texture2D> Textures = new Dictionary<string, Texture2D>();
         public Dictionary<string, SoundEffect> Audio = new Dictionary<string, SoundEffect>();
         public Dictionary<string, Effect> Effects = new Dictionary<string, Effect>();
-
-        //public Dictionary<string, Effect> Effects = new Dictionary<string, Effect>();
 
         public Random random;
 
@@ -48,6 +49,8 @@ namespace CrownEngine
 
         public Effect outlineEffect;
 
+        private RenderTarget2D scene;
+
         public EngineGame()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -60,32 +63,71 @@ namespace CrownEngine
         {
             scene = new RenderTarget2D(GraphicsDevice, windowWidth, windowHeight, false, SurfaceFormat.Color, DepthFormat.None);
 
-            /*foreach (string file in Directory.EnumerateFiles("Content/", "*.fx", SearchOption.AllDirectories))
-            {
-                string fixedPath = file.Substring(Content.RootDirectory.Length).TrimStart(Path.DirectorySeparatorChar);
-                Effects[Path.GetFileName(fixedPath)] = Content.Load<Effect>(fixedPath);
-            }*/
-
             random = new Random();
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            //outlineEffect = Content.Load<Effect>("Outline");
+            base.Initialize();
+
+            RegisterContent();
+
+            InitializeStages();
 
             CustomInitialize();
-
-            base.Initialize();
         }
+
+        public void RegisterContent()
+        {
+            foreach (string file in Directory.EnumerateFiles("Content/", "*.png", SearchOption.AllDirectories))
+            {
+                string fixedPath = file.Substring(Content.RootDirectory.Length).TrimStart(Path.DirectorySeparatorChar);
+
+                instance.Textures[Path.GetFileName(fixedPath)] = Texture2D.FromStream(GraphicsDevice, File.OpenRead(file));
+            }
+
+            foreach (string file in Directory.EnumerateFiles("Content/", "*.wav", SearchOption.AllDirectories))
+            {
+                string fixedPath = file.Substring(Content.RootDirectory.Length).TrimStart(Path.DirectorySeparatorChar);
+
+                instance.Audio[Path.GetFileName(fixedPath)] = SoundEffect.FromStream(File.OpenRead(file));
+            }
+
+            foreach (string file in Directory.EnumerateFiles("Content/", "*.fx", SearchOption.AllDirectories))
+            {
+                string fixedPath = file.Substring(Content.RootDirectory.Length).TrimStart(Path.DirectorySeparatorChar);
+
+                instance.Effects[Path.GetFileName(fixedPath)] = Content.Load<Effect>(Path.GetFileName(fixedPath));
+            }
+        }
+
+        /*public Texture2D GetTexture(string file)
+        {
+            string fixedPath = file.Substring(Content.RootDirectory.Length).TrimStart(Path.DirectorySeparatorChar);
+
+            return Texture2D.FromStream(GraphicsDevice, File.OpenRead(file));
+        }
+
+        public SoundEffect GetSound(string file)
+        {
+            string fixedPath = file.Substring(Content.RootDirectory.Length).TrimStart(Path.DirectorySeparatorChar);
+
+            return SoundEffect.FromStream(File.OpenRead(file));
+        }
+
+        public Effect GetEffect(string file)
+        {
+            string fixedPath = file.Substring(Content.RootDirectory.Length).TrimStart(Path.DirectorySeparatorChar);
+
+            return Content.Load<Effect>(Path.GetFileName(fixedPath));
+        }*/
 
         public virtual void CustomInitialize()
         {
 
         }
 
-        public virtual void InitializeStages(List<Stage> _stages)
+        public void InitializeStages()
         {
-            stages = _stages;
-
             activeStage = stages[0];
 
             activeStage.Load();
@@ -117,9 +159,13 @@ namespace CrownEngine
 
         }
 
-        protected void DrawSceneToTexture(RenderTarget2D renderTarget)
+        protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.SetRenderTarget(renderTarget);
+            _graphics.PreferredBackBufferWidth = windowWidth * windowScale;
+            _graphics.PreferredBackBufferHeight = windowHeight * windowScale;
+            _graphics.ApplyChanges();
+
+            GraphicsDevice.SetRenderTarget(scene);
             GraphicsDevice.Clear(activeStage.bgColor);
 
             _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone);
@@ -132,17 +178,6 @@ namespace CrownEngine
 
             // Drop the render target
             GraphicsDevice.SetRenderTarget(null);
-        }
-
-        //Drawing the scene
-        private RenderTarget2D scene;
-        protected override void Draw(GameTime gameTime)
-        {
-            _graphics.PreferredBackBufferWidth = windowWidth * windowScale;
-            _graphics.PreferredBackBufferHeight = windowHeight * windowScale;
-            _graphics.ApplyChanges();
-
-            DrawSceneToTexture(scene);
 
             _spriteBatch.End();
             _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone);
