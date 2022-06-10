@@ -7,17 +7,11 @@ using Microsoft.Xna.Framework.Content;
 
 namespace CrownEngine
 {
-    public class Component
+    public class GameSystem
     {
-        public Actor myActor;
-        public Component(Actor _myActor)
+        public GameSystem()
         {
-            myActor = _myActor;
-        }
-
-        public virtual void Load()
-        {
-
+            
         }
 
         public virtual void Update()

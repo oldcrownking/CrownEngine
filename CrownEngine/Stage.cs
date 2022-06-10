@@ -11,7 +11,6 @@ namespace CrownEngine
     public class Stage
     {
         public List<Actor> actors = new List<Actor>();
-
         public virtual Color bgColor => Color.Black;
 
         public bool loaded = false;

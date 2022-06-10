@@ -25,35 +25,20 @@ namespace CrownEngine
         public virtual int windowWidth => 256;
         public virtual int windowHeight => 144;
         public virtual int windowScale => 2;
-        
-        //public virtual string 
 
         public virtual List<Stage> stages => new List<Stage>();
+        public static Stage activeStage;
 
-        public Stage activeStage;
+        private static RenderTarget2D scene;
 
-        public Dictionary<string, Texture2D> Textures = new Dictionary<string, Texture2D>();
-        public Dictionary<string, SoundEffect> Audio = new Dictionary<string, SoundEffect>();
-        public Dictionary<string, Effect> Effects = new Dictionary<string, Effect>();
+        public static Random random;
 
-        public Random random;
-
-        public KeyboardState oldKeyboardState;
-        public KeyboardState keyboardState;
-
-        public MouseState oldMouseState;
-        public MouseState mouseState;
-
-        public Vector2 mousePos;
-        public Vector2 oldMousePos;
-
-        public Effect outlineEffect;
-
-        private RenderTarget2D scene;
+        public static List<GameSystem> systems = new List<GameSystem>();
 
         public EngineGame()
         {
             _graphics = new GraphicsDeviceManager(this);
+
             Content.RootDirectory = "Content";
 
             instance = this;
@@ -66,64 +51,24 @@ namespace CrownEngine
             random = new Random();
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            
+            IEnumerable<Type> systemsArray = typeof(GameSystem).Assembly.GetTypes().Where(TheType => TheType.IsClass && !TheType.IsAbstract && TheType.IsSubclassOf(typeof(GameSystem)) && (!TheType.IsGenericType || TheType.IsConstructedGenericType));
+
+            foreach(Type type in systemsArray)
+                systems.Add(Activator.CreateInstance(type) as GameSystem);
 
             base.Initialize();
 
-            RegisterContent();
-
             InitializeStages();
-
-            CustomInitialize();
         }
 
-        public void RegisterContent()
+        public static T GetSystem<T>() where T : GameSystem
         {
-            foreach (string file in Directory.EnumerateFiles("Content/", "*.png", SearchOption.AllDirectories))
-            {
-                string fixedPath = file.Substring(Content.RootDirectory.Length).TrimStart(Path.DirectorySeparatorChar);
+            for (int i = 0; i < systems.Count; i++)
+                if (systems[i] is T)
+                    return systems[i] as T;
 
-                instance.Textures[Path.GetFileName(fixedPath)] = Texture2D.FromStream(GraphicsDevice, File.OpenRead(file));
-            }
-
-            foreach (string file in Directory.EnumerateFiles("Content/", "*.wav", SearchOption.AllDirectories))
-            {
-                string fixedPath = file.Substring(Content.RootDirectory.Length).TrimStart(Path.DirectorySeparatorChar);
-
-                instance.Audio[Path.GetFileName(fixedPath)] = SoundEffect.FromStream(File.OpenRead(file));
-            }
-
-            foreach (string file in Directory.EnumerateFiles("Content/", "*.fx", SearchOption.AllDirectories))
-            {
-                string fixedPath = file.Substring(Content.RootDirectory.Length).TrimStart(Path.DirectorySeparatorChar);
-
-                instance.Effects[Path.GetFileName(fixedPath)] = Content.Load<Effect>(Path.GetFileName(fixedPath));
-            }
-        }
-
-        /*public Texture2D GetTexture(string file)
-        {
-            string fixedPath = file.Substring(Content.RootDirectory.Length).TrimStart(Path.DirectorySeparatorChar);
-
-            return Texture2D.FromStream(GraphicsDevice, File.OpenRead(file));
-        }
-
-        public SoundEffect GetSound(string file)
-        {
-            string fixedPath = file.Substring(Content.RootDirectory.Length).TrimStart(Path.DirectorySeparatorChar);
-
-            return SoundEffect.FromStream(File.OpenRead(file));
-        }
-
-        public Effect GetEffect(string file)
-        {
-            string fixedPath = file.Substring(Content.RootDirectory.Length).TrimStart(Path.DirectorySeparatorChar);
-
-            return Content.Load<Effect>(Path.GetFileName(fixedPath));
-        }*/
-
-        public virtual void CustomInitialize()
-        {
-
+            return null;
         }
 
         public void InitializeStages()
@@ -135,39 +80,23 @@ namespace CrownEngine
 
         protected override void Update(GameTime gameTime)
         {
-            oldKeyboardState = keyboardState;
-            keyboardState = Keyboard.GetState();
-
-            oldMouseState = mouseState;
-            mouseState = Mouse.GetState();
-
-            mousePos = (mouseState.Position.ToVector2() / windowScale);
-            oldMousePos = (oldMouseState.Position.ToVector2() / windowScale);
-
-            if (keyboardState.IsKeyDown(Keys.Escape))
-                Exit();
-
             activeStage.Update();
-
-            CustomUpdate();
 
             base.Update(gameTime);
         }
 
-        public virtual void CustomUpdate()
-        {
-
-        }
-
         protected override void Draw(GameTime gameTime)
         {
+            #region Initializing the graphicsdevice
             _graphics.PreferredBackBufferWidth = windowWidth * windowScale;
             _graphics.PreferredBackBufferHeight = windowHeight * windowScale;
             _graphics.ApplyChanges();
 
             GraphicsDevice.SetRenderTarget(scene);
             GraphicsDevice.Clear(activeStage.bgColor);
+            #endregion
 
+            #region Rendering the scene
             _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone);
 
             activeStage.PreDraw(_spriteBatch);
@@ -180,20 +109,17 @@ namespace CrownEngine
             GraphicsDevice.SetRenderTarget(null);
 
             _spriteBatch.End();
+            #endregion
+
+            #region Rendering the scene rendertarget
             _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone);
 
             _spriteBatch.Draw(scene, new Rectangle(0, 0, windowWidth * windowScale, windowHeight * windowScale), Color.White);
 
-            CustomPostDraw(_spriteBatch);
-
             _spriteBatch.End();
+            #endregion
 
             base.Draw(gameTime);
-        }
-
-        public virtual void CustomPostDraw(SpriteBatch spriteBatch)
-        {
-
         }
     }
 }

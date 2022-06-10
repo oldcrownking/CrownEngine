@@ -11,27 +11,14 @@ namespace CrownEngine
     {
         public Stage myStage;
 
-        public int width = 16;
-        public int height = 16;
-
-        public Vector2 position = Vector2.Zero;
-
         public List<Component> components = new List<Component>();
 
-        public bool saveBetweenScenes = false;
-
-        public Rectangle rect => new Rectangle((int)position.X, (int)position.Y, width, height);
-
-        public Vector2 Center => new Vector2(position.X + width / 2, position.Y + height / 2);
-
-        public Actor(Vector2 pos, Stage stage)
+        public Actor(Stage stage)
         {
-            position = pos;
-
             myStage = stage;
         }
 
-        public virtual void Load()
+        public void Load()
         {
             foreach (Component component in components)
             {
@@ -39,37 +26,23 @@ namespace CrownEngine
             }
         }
 
-        public virtual void Update()
+        public void Update()
         {
             foreach (Component component in components)
             {
-                component.myActor = this;
-
                 component.Update();
             }
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             foreach (Component component in components)
             {
-                component.myActor = this;
-
                 component.Draw(spriteBatch);
             }
         }
 
-        public virtual void PreDraw(SpriteBatch spriteBatch)
-        {
-
-        }
-
-        public virtual void PostDraw(SpriteBatch spriteBatch)
-        {
-
-        }
-
-        public virtual void Kill()
+        public void Remove()
         {
             myStage.RemoveActor(this);
         }
@@ -82,11 +55,13 @@ namespace CrownEngine
         public void RemoveComponent<T>() where T : Component
         {
             for (int i = 0; i < components.Count; i++)
+            {
                 if (components[i] is T)
                 {
                     components[i] = components[components.Count - 1];
                     components[components.Count - 1] = null;
                 }
+            }
         }
 
         public bool HasComponent<T>() where T : Component

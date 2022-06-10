@@ -3,12 +3,18 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
+using CrownEngine;
 
-namespace CrownEngine
+namespace CrownEngine.Prefabs
 {
-    public static partial class EngineHelpers
+    public class Collision : GameSystem
     {
+        public Collision() : base()
+        {
+
+        }
+
         public static bool IsTouchingLeft(Rectangle rect1, Rectangle rect2, Vector2 vel)
         {
             return rect1.Right + vel.X > rect2.Left &&
@@ -44,19 +50,6 @@ namespace CrownEngine
         public static bool IsColliding(Rectangle rect1, Rectangle rect2, Vector2 vel)
         {
             return IsTouchingLeft(rect1, rect2, vel) || IsTouchingRight(rect1, rect2, vel) || IsTouchingTop(rect1, rect2, vel) || IsTouchingBottom(rect1, rect2, vel);
-        }
-
-        public static Actor IsCollidingWithAnything(Rectangle rect, Vector2 velocity)
-        {
-            for (int i = 0; i < EngineGame.instance.activeStage.actors.Count; i++)
-            {
-                if (EngineGame.instance.activeStage.actors[i] != null)
-                {
-                    if (IsColliding(rect, EngineGame.instance.activeStage.actors[i].rect, velocity)) return EngineGame.instance.activeStage.actors[i];
-                }
-            }
-
-            return null;
         }
     }
 }
