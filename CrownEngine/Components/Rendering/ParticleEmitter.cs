@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace CrownEngine
+namespace CrownEngine.Components.Rendering
 {
     public class ParticleEmitter : Component
     {
@@ -57,9 +57,9 @@ namespace CrownEngine
                 SpawnParticle();
             }
 
-            if(emissionRate > 1)
+            if (emissionRate > 1)
             {
-                for(int i = 0; i < (int)emissionRate; i++)
+                for (int i = 0; i < (int)emissionRate; i++)
                 {
                     SpawnParticle();
                 }
@@ -81,9 +81,9 @@ namespace CrownEngine
 
             if (emissionType == EmissionTypeID.Radial) vel = Vector2.UnitY.RotatedBy(EngineHelpers.NextFloat(6.28f)) * 2f;
             if (emissionType == EmissionTypeID.Conical) vel = emissionDirection.RotatedBy(EngineHelpers.NextFloat(coneAngleMin, coneAngleMax));
-            if (emissionType == EmissionTypeID.Biconical) vel = (EngineHelpers.NextBool(2)
+            if (emissionType == EmissionTypeID.Biconical) vel = EngineHelpers.NextBool(2)
                     ? emissionDirection.RotatedBy(EngineHelpers.NextFloat(coneAngleMin, coneAngleMax))
-                    : emissionDirection.RotatedBy(EngineHelpers.NextFloat(coneAngleMax + 3.14f, coneAngleMin + 3.14f)));
+                    : emissionDirection.RotatedBy(EngineHelpers.NextFloat(coneAngleMax + 3.14f, coneAngleMin + 3.14f));
 
             Particle p = new Particle(myActor.position,
                 vel,
@@ -164,7 +164,7 @@ namespace CrownEngine
 
             timeLeft--;
         }
-        
+
         public void Draw(SpriteBatch spriteBatch)
         {
             for (int i = 0; i < components.Length; i++)

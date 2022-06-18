@@ -21,7 +21,7 @@ namespace CrownEngine
 
         public Stage()
         {
-
+            
         }
 
         public virtual void Update()
@@ -44,38 +44,6 @@ namespace CrownEngine
             }
         }
 
-        public virtual void PreDraw(SpriteBatch spriteBatch)
-        {
-            for (int i = 0; i < actors.Count; i++)
-            {
-                if (actors[i] == null) continue;
-
-                actors[i].PreDraw(spriteBatch);
-            }
-        }
-
-        public virtual void PostDraw(SpriteBatch spriteBatch)
-        {
-            for (int i = 0; i < actors.Count; i++)
-            {
-                if (actors[i] == null) continue;
-
-                actors[i].PostDraw(spriteBatch);
-            }
-        }
-
-        public virtual void Load()
-        {
-            loaded = true;
-
-            for(int i = 0; i < actors.Count; i++)
-            {
-                if (actors[i] == null) continue;
-
-                actors[i].Load();
-            }
-        }
-
         public virtual void Unload()
         {
             loaded = false;
@@ -94,7 +62,6 @@ namespace CrownEngine
 
         public void AddActor(Actor actor)
         {
-            actor.Load();
             actors.Add(actor);
         }
     }

@@ -9,16 +9,9 @@ namespace CrownEngine
 {
     public class Actor
     {
-        public Stage myStage;
-
         public List<Component> components = new List<Component>();
 
-        public Actor(Stage stage)
-        {
-            myStage = stage;
-        }
-
-        public void Load()
+        public Actor()
         {
             foreach (Component component in components)
             {
@@ -42,11 +35,6 @@ namespace CrownEngine
             }
         }
 
-        public void Remove()
-        {
-            myStage.RemoveActor(this);
-        }
-
         public void AddComponent(Component component)
         {
             components.Add(component);
@@ -54,12 +42,12 @@ namespace CrownEngine
 
         public void RemoveComponent<T>() where T : Component
         {
+            //TODO replace this with just using components.Remove
             for (int i = 0; i < components.Count; i++)
             {
                 if (components[i] is T)
                 {
-                    components[i] = components[components.Count - 1];
-                    components[components.Count - 1] = null;
+                    components.RemoveAt(i);
                 }
             }
         }

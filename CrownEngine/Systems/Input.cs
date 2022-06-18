@@ -11,7 +11,7 @@ namespace CrownEngine.Systems
 {
     public class Input : GameSystem
     {
-        public static Input Instance { get; private set; }
+        //public static Input Instance { get; private set; }
 
         public KeyboardState oldKeyboardState;
         public KeyboardState keyboardState;
@@ -35,8 +35,9 @@ namespace CrownEngine.Systems
             oldMouseState = mouseState;
             mouseState = Mouse.GetState();
 
-            mousePos = (mouseState.Position.ToVector2() / EngineGame.instance.windowScale);
-            oldMousePos = (oldMouseState.Position.ToVector2() / EngineGame.instance.windowScale);
+            //TODO factor in window scale/pixelation
+            mousePos = mouseState.Position.ToVector2();
+            oldMousePos = oldMouseState.Position.ToVector2();
         }
 
         public bool KeyJustPressed(Keys key)

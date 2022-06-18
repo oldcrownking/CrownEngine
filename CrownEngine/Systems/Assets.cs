@@ -12,11 +12,13 @@ namespace CrownEngine.Systems
 {
     public class Assets : GameSystem
     {
-        public static Assets Instance { get; private set; }
+        //public static Assets Instance { get; private set; }
 
         public Dictionary<string, Texture2D> Textures = new Dictionary<string, Texture2D>();
-        public Dictionary<string, SoundEffect> Audio = new Dictionary<string, SoundEffect>();
+        public Dictionary<string, SoundEffect> SoundEffects = new Dictionary<string, SoundEffect>();
         public Dictionary<string, Effect> Effects = new Dictionary<string, Effect>();
+
+        //TODO add font loading
 
         public Assets() : base()
         {
@@ -36,7 +38,7 @@ namespace CrownEngine.Systems
             {
                 string fixedPath = file.Substring(EngineGame.instance.Content.RootDirectory.Length).TrimStart(Path.DirectorySeparatorChar);
 
-                Audio[Path.GetFileName(fixedPath)] = SoundEffect.FromStream(File.OpenRead(file));
+                SoundEffects[Path.GetFileName(fixedPath)] = SoundEffect.FromStream(File.OpenRead(file));
             }
 
             foreach (string file in Directory.EnumerateFiles("Content/", "*.fx", SearchOption.AllDirectories))
@@ -49,23 +51,38 @@ namespace CrownEngine.Systems
 
         public Texture2D GetTexture(string file)
         {
-            string fixedPath = file.Substring(EngineGame.instance.Content.RootDirectory.Length).TrimStart(Path.DirectorySeparatorChar);
-
-            return Texture2D.FromStream(EngineGame.instance.GraphicsDevice, File.OpenRead(file));
+            try 
+            {
+                return Textures[file];
+            }
+            catch 
+            {
+                throw new Exception("Texture not found."); 
+            }
         }
 
         public SoundEffect GetSound(string file)
         {
-            string fixedPath = file.Substring(EngineGame.instance.Content.RootDirectory.Length).TrimStart(Path.DirectorySeparatorChar);
-
-            return SoundEffect.FromStream(File.OpenRead(file));
+            try
+            {
+                return SoundEffects[file];
+            }
+            catch
+            {
+                throw new Exception("Sound effect not found.");
+            }
         }
 
         public Effect GetEffect(string file)
         {
-            string fixedPath = file.Substring(EngineGame.instance.Content.RootDirectory.Length).TrimStart(Path.DirectorySeparatorChar);
-
-            return EngineGame.instance.Content.Load<Effect>(Path.GetFileName(fixedPath));
+            try
+            {
+                return Effects[file];
+            }
+            catch
+            {
+                throw new Exception("Effect not found.");
+            }
         }
     }
 }
