@@ -13,9 +13,9 @@ namespace CrownEngine.Systems
     /// </summary>
     public class Window : GameSystem
     {
-        public virtual int windowWidth => 256;
-        public virtual int windowHeight => 144;
-        public virtual int windowScale => 2;
+        public int windowWidth;
+        public int windowHeight;
+        public int windowScale;
 
         public List<WindowLayer> layers;
 
@@ -23,23 +23,29 @@ namespace CrownEngine.Systems
 
         public Window() : base()
         {
+
+        }
+
+        public override void Load()
+        {
             graphics = new GraphicsDeviceManager(EngineGame.instance);
+
+            if (windowHeight == 0 || windowWidth == 0 || windowScale == 0) throw new Exception("Window dimension parameters not set");
 
             graphics.PreferredBackBufferWidth = windowWidth * windowScale;
             graphics.PreferredBackBufferHeight = windowHeight * windowScale;
-
 
             layers = new List<WindowLayer>();
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            PrepareRenderTargets(spriteBatch);
+            PrepareLayers(spriteBatch);
 
-            DrawRenderTargets(spriteBatch);
+            DrawLayers(spriteBatch);
         }
 
-        public void PrepareRenderTargets(SpriteBatch spriteBatch)
+        public void PrepareLayers(SpriteBatch spriteBatch)
         {
             foreach(WindowLayer layer in layers)
             {
@@ -52,7 +58,7 @@ namespace CrownEngine.Systems
             EngineGame.instance.GraphicsDevice.SetRenderTarget(null);
         }
 
-        public void DrawRenderTargets(SpriteBatch spriteBatch)
+        public void DrawLayers(SpriteBatch spriteBatch)
         {
             foreach (WindowLayer layer in layers)
             {
@@ -62,15 +68,18 @@ namespace CrownEngine.Systems
                     foreach(EffectPass pass in layer.effect.CurrentTechnique.Passes)
                         pass.Apply();
 
-                spriteBatch.Draw(layer.renderTarget, new Rectangle(0, 0, windowWidth * windowScale, windowHeight * windowScale), Color.White);
+                spriteBatch.Draw(layer.renderTarget, layer.outputRect, Color.White);
 
                 spriteBatch.End();
             }
         }
 
-        //TODO make this actually take parameters
-        public void ChangeResolution()
+        public void ChangeResolution(int newWindowWidth, int newWindowHeight, int newWindowScale)
         {
+            windowWidth = newWindowHeight;
+            windowHeight = newWindowHeight;
+            windowWidth = newWindowWidth;
+
             graphics.PreferredBackBufferWidth = windowWidth * windowScale;
             graphics.PreferredBackBufferHeight = windowHeight * windowScale;
 
@@ -81,25 +90,58 @@ namespace CrownEngine.Systems
     public class WindowLayer
     {
         public RenderTarget2D renderTarget;
+        public int sortingId;
+        public Rectangle outputRect;
 
         public Color clearColor;
-
         public BlendState blendState;
-
-        public int sortingId;
-
         public Effect effect;
 
-        //TODO make actual params
-        public WindowLayer()
+        private GraphicsDevice graphicsDevice;
+
+        public WindowLayer(int _sortingId, Rectangle _outputRect, Point dimensions, BlendState _blendState)
         {
-            renderTarget = new RenderTarget2D(EngineGame.instance.GraphicsDevice, windowWidth, windowHeight, false, SurfaceFormat.Color, DepthFormat.None);
+            graphicsDevice = EngineGame.instance.GraphicsDevice;
+
+            renderTarget = new RenderTarget2D(graphicsDevice, dimensions.X, dimensions.Y, false, SurfaceFormat.Color, DepthFormat.None);
 
             clearColor = Color.Transparent;
 
-            blendState = BlendState.AlphaBlend;
+            blendState = _blendState;
 
-            sortingId = 0;
+            sortingId = _sortingId;
+
+            effect = new BasicEffect(graphicsDevice);
+        }
+
+        public WindowLayer(int _sortingId, Rectangle _outputRect, Point dimensions, BlendState _blendState, Color _clearColor)
+        {
+            graphicsDevice = EngineGame.instance.GraphicsDevice;
+
+            renderTarget = new RenderTarget2D(graphicsDevice, dimensions.X, dimensions.Y, false, SurfaceFormat.Color, DepthFormat.None);
+
+            clearColor = _clearColor;
+
+            blendState = _blendState;
+
+            sortingId = _sortingId;
+
+            effect = new BasicEffect(graphicsDevice);
+        }
+
+        public WindowLayer(int _sortingId, Rectangle _outputRect, Point dimensions, BlendState _blendState, Color _clearColor, Effect _effect)
+        {
+            graphicsDevice = EngineGame.instance.GraphicsDevice;
+
+            renderTarget = new RenderTarget2D(graphicsDevice, dimensions.X, dimensions.Y, false, SurfaceFormat.Color, DepthFormat.None);
+
+            clearColor = _clearColor;
+
+            blendState = _blendState;
+
+            sortingId = _sortingId;
+
+            effect = _effect;
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)

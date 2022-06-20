@@ -10,24 +10,10 @@ namespace CrownEngine
     public class Component
     {
         public Actor myActor;
+
         public Component(Actor _myActor)
         {
             myActor = _myActor;
-        }
-
-        public virtual void Load()
-        {
-
-        }
-
-        public virtual void Update()
-        {
-
-        }
-
-        public virtual void Draw(SpriteBatch spriteBatch)
-        {
-            
         }
     }
 }

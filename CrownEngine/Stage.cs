@@ -5,48 +5,40 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
+using CrownEngine.Systems;
 
 namespace CrownEngine
 {
     public class Stage
     {
         public List<Actor> actors = new List<Actor>();
-        public virtual Color bgColor => Color.Black;
 
-        public bool loaded = false;
-
-        public Vector2 screenPosition = Vector2.Zero;
-
-        public bool clearActorsOnUnload = true;
+        public List<GameManager> managers = new List<GameManager>();
 
         public Stage()
         {
             
         }
 
+        public virtual void Load()
+        {
+            EngineGame.GetSystem<Window>().layers.Add(new WindowLayer());
+        }
+
         public virtual void Update()
         {
-            for (int i = 0; i < actors.Count; i++)
+            foreach(GameManager manager in managers)
             {
-                if (actors[i] == null) continue;
-
-                actors[i].Update();
+                manager.Update();
             }
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            for (int i = 0; i < actors.Count; i++)
+            foreach (GameManager manager in managers)
             {
-                if (actors[i] == null) continue;
-
-                actors[i].Draw(spriteBatch);
+                manager.Draw(spriteBatch);
             }
-        }
-
-        public virtual void Unload()
-        {
-            loaded = false;
         }
 
         public void RemoveActor(Actor actor)

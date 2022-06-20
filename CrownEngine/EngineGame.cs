@@ -20,25 +20,23 @@ namespace CrownEngine
     {
         public static EngineGame instance { get; private set; }
 
-        public static Random random; //TODO move this to MathHelpers somehow
-
         public static List<GameSystem> systems = new List<GameSystem>();
 
-        public SpriteBatch spriteBatch;
+        public static SpriteBatch spriteBatch;
 
         public EngineGame()
         {
-            Content.RootDirectory = "Content";
+            
         }
 
         protected override void Initialize()
         {
-            random = new Random();
-
             IEnumerable<Type> systemsArray = typeof(GameSystem).Assembly.GetTypes().Where(TheType => TheType.IsClass && !TheType.IsAbstract && TheType.IsSubclassOf(typeof(GameSystem)) && (!TheType.IsGenericType || TheType.IsConstructedGenericType));
 
-            foreach(Type type in systemsArray)
+            foreach (Type type in systemsArray)
                 systems.Add(Activator.CreateInstance(type) as GameSystem);
+
+            Load();
 
             base.Initialize();
         }
@@ -65,7 +63,30 @@ namespace CrownEngine
                 if (systems[i] is T)
                     return systems[i] as T;
 
-            throw new Exception("System instance not found.");
+            throw new Exception("System instance not found");
         }
+
+        public void EndGame()
+        {
+            Save();
+
+            Exit();
+        }
+
+        public virtual void Save()
+        {
+            foreach (GameSystem system in systems)
+            {
+                system.Save();
+            }
+        }
+
+        public virtual void Load()
+        {
+            foreach(GameSystem system in systems)
+            {
+                system.Load();
+            }
+        } 
     }
 }

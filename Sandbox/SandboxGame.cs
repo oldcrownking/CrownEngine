@@ -15,6 +15,28 @@ namespace Sandbox
             IsMouseVisible = true;
         }
 
-        public override 
+        protected override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+        }
+
+        protected override void Draw(GameTime gameTime)
+        {
+            base.Update(gameTime);
+        }
+    }
+
+    public class SandboxStage : Stage
+    {
+        public SandboxStage()
+        {
+            Actor bouncingBall = new Actor();
+            bouncingBall.AddComponent(new SpriteRenderer());
+            bouncingBall.AddComponent(new Transform());
+            bouncingBall.AddComponent(new CircleCollider());
+
+
+            actors.Add();
+        }
     }
 }

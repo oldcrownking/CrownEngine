@@ -13,26 +13,7 @@ namespace CrownEngine
 
         public Actor()
         {
-            foreach (Component component in components)
-            {
-                component.Load();
-            }
-        }
 
-        public void Update()
-        {
-            foreach (Component component in components)
-            {
-                component.Update();
-            }
-        }
-
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            foreach (Component component in components)
-            {
-                component.Draw(spriteBatch);
-            }
         }
 
         public void AddComponent(Component component)

@@ -10,10 +10,9 @@ using Microsoft.Xna.Framework.Audio;
 
 namespace CrownEngine.Systems
 {
+    //TODO add summary tags to here and all other core classes
     public class Assets : GameSystem
     {
-        //public static Assets Instance { get; private set; }
-
         public Dictionary<string, Texture2D> Textures = new Dictionary<string, Texture2D>();
         public Dictionary<string, SoundEffect> SoundEffects = new Dictionary<string, SoundEffect>();
         public Dictionary<string, Effect> Effects = new Dictionary<string, Effect>();
@@ -23,6 +22,13 @@ namespace CrownEngine.Systems
         public Assets() : base()
         {
 
+        }
+
+        public override void Load()
+        {
+            EngineGame.instance.Content.RootDirectory = "Content";
+            
+            RegisterContent();
         }
 
         public void RegisterContent()

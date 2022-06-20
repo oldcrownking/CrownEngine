@@ -7,13 +7,13 @@ using Microsoft.Xna.Framework.Content;
 
 namespace CrownEngine
 {
-    public class GameSystem
+    public class GameManager
     {
-        public GameSystem()
+        public GameManager()
         {
             
         }
-
+        
         public virtual void Update()
         {
 

@@ -16,8 +16,6 @@ namespace CrownEngine.Systems
     /// </summary>
     public class Director : GameSystem
     {
-        //public static Director Instance { get; private set; }
-
         public List<Stage> stages => new List<Stage>();
         public List<Actor> offstageActors => new List<Actor>();
 
@@ -25,7 +23,12 @@ namespace CrownEngine.Systems
 
         public Director() : base()
         {
+            
+        }
 
+        public override void Load()
+        {
+            activeStage = stages[0];
         }
 
         public override void Update()
@@ -35,7 +38,7 @@ namespace CrownEngine.Systems
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            base.Draw(spriteBatch);
+            activeStage.Draw(spriteBatch);
         }
     }
 }
