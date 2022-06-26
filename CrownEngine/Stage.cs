@@ -22,7 +22,10 @@ namespace CrownEngine
 
         public virtual void Load()
         {
-            EngineGame.GetSystem<Window>().layers.Add(new WindowLayer());
+            EngineGame.GetSystem<Window>().layers.Add(
+                new WindowLayer(0, new Rectangle(0, 0, EngineGame.GetSystem<Window>().width, EngineGame.GetSystem<Window>().height), 
+                new Point(EngineGame.GetSystem<Window>().windowWidth, EngineGame.GetSystem<Window>().windowHeight), 
+                BlendState.AlphaBlend));
         }
 
         public virtual void Update()

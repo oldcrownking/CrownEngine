@@ -17,6 +17,10 @@ namespace CrownEngine.Systems
         public int windowHeight;
         public int windowScale;
 
+        public int width => windowWidth * windowScale;
+        public int height => windowHeight * windowScale;
+
+
         public List<WindowLayer> layers;
 
         public GraphicsDeviceManager graphics;
@@ -32,8 +36,8 @@ namespace CrownEngine.Systems
 
             if (windowHeight == 0 || windowWidth == 0 || windowScale == 0) throw new Exception("Window dimension parameters not set");
 
-            graphics.PreferredBackBufferWidth = windowWidth * windowScale;
-            graphics.PreferredBackBufferHeight = windowHeight * windowScale;
+            graphics.PreferredBackBufferWidth = width;
+            graphics.PreferredBackBufferHeight = height;
 
             layers = new List<WindowLayer>();
         }
